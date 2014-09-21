@@ -15,7 +15,9 @@
                  [liberator "0.12.0"]
                  [com.taoensso/timbre "3.2.1"]
                  [fogus/ring-edn "0.2.0"]
-                 [domina "1.0.2"]]
+                 [domina "1.0.2"]
+                 [clj-json "0.5.3"]
+                 [hiccup "1.0.5"]]
   :plugins [[lein-ring "0.8.10"]
             [lein-cljsbuild "1.0.4-SNAPSHOT"]]
   :source-paths ["src"]
@@ -27,7 +29,7 @@
                 :output-dir "resources/public/out"
                 :optimizations :none
                 :source-map true}}]}
-  :ring {:handler webapp.server/app
+  :ring {:handler webapp.api/handler
          :nrepl {:start? true :port 4500}
          :port 8090}
   :global-vars {*print-length* 20})
