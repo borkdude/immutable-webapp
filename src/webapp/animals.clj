@@ -1,4 +1,5 @@
-(ns webapp.animals)
+(ns webapp.animals
+  (:require [webapp.db :as db]))
 
 (def animals
   (ref
@@ -17,28 +18,18 @@
 
 (defn create
   [a]
-  (dosync
-   (let [id (+ 1 (apply max (keys @animals)))]
-     (alter animals assoc id (assoc a :id id)))))
+  (db/create animals a))
 
 (defn read
   ([]
-     (dosync
-      (vals @animals)))
+     (db/read animals))
   ([id]
-     (get @animals id)))
+     (db/read animals id)))
 
 (defn update
   [a]
-  (when-let [id (:id a)]
-    (when-let [found (get @animals id)]
-      (dosync
-       (let [merged (merge found a)]
-         (alter animals update-in [id] merged)
-         merged)))))
+  (db/update animals a))
 
 (defn delete
   [id]
-  (if (get @animals id)
-    (dosync
-     (alter animals dissoc id))))
+  (db/delete animals id))
