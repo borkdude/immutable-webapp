@@ -3,15 +3,15 @@
 
 (def animals
   (ref
-   {1 {:id 1
+   {1 {:id (db/next-id)
        :name "Painted-snipe"
        :species "Rostratulidae"
        :img "0636920013754.gif"}
-    2 {:id 2
+    2 {:id (db/next-id)
        :name "Aardwolf"
        :species "Proteles cristata"
        :img "0636920029786.gif"}
-    3 {:id 3
+    3 {:id (db/next-id)
        :name "Yellow-backed duiker"
        :species "Cephalophus silvicultor"
        :img "0636920025139.gif"}}))
@@ -27,8 +27,8 @@
      (db/read animals id)))
 
 (defn update
-  [a]
-  (db/update animals a))
+  [id a]
+  (db/update animals id a))
 
 (defn delete
   [id]

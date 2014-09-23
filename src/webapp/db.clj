@@ -1,9 +1,14 @@
 (ns webapp.db)
 
+(def max-id (atom 0))
+
+(defn next-id
+  [] (swap! max-id inc))
+
 (defn create
   [r m]
   (dosync
-   (let [id (+ 1 (apply max (keys (deref r))))]
+   (let [id (next-id)]
      (alter r assoc id (assoc m :id id)))))
 
 (defn read
@@ -13,13 +18,10 @@
      (get (deref r) id)))
 
 (defn update
-  [r m]
+  [r id m]
   (dosync
-   (when-let [id (:id m)]
-     (when-let [found (get (deref r) id)]
-       (let [merged (merge found m)]
-         (alter r assoc id merged)
-         merged)))))
+   (when (contains? (deref r) id)
+     (alter r update-in [id] merge m))))
 
 (defn delete
   [r id]
