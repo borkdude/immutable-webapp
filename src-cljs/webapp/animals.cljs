@@ -18,7 +18,8 @@
   (-> (js/Date.) .valueOf))
 
 (defn add-animal! [a]
-  (swap! animals-state conj (assoc a :id (gen-id))))
+  (swap! animals-state conj (assoc a :id (gen-id)
+                                     :type :animal)))
 
 (defn remove-animal! [a]
   (swap! animals-state disj a))
@@ -34,7 +35,8 @@
              a))))
 
 (defn field-input-handler
-  "Updates value in atom map under key with value from onChange event"
+  "Returns a handler that updates value in atom map,
+  under key, with value from onChange event"
   [atom key]
   (fn [e]
     (swap! atom
@@ -48,7 +50,7 @@
              :onChange (field-input-handler atom key)}]
     (get @atom key)))
 
-(defn animal-row [idx a]
+(defn animal-row [a]
   (let [row-state (atom {:editing? false
                          :name     (:name a)
                          :species  (:species a)})
@@ -71,20 +73,17 @@
              "\u00D7"]]])))
 
 (defn animal-form []
-  (let [initial-form-values {:name    ""
-                             :species ""}
+  (let [initial-form-values {:name     ""
+                             :species  ""
+                             :editing? true}
         form-input-state (atom initial-form-values)
         are-inputs-valid? (fn []
                             (and (seq (-> @form-input-state :name))
                                  (seq (-> @form-input-state :species))))]
     (fn []
       [:tr
-       [:td [:input {:type     "text"
-                     :value    (-> @form-input-state :name)
-                     :onChange (field-input-handler form-input-state :name)}]]
-       [:td [:input {:type     "text"
-                     :value    (-> @form-input-state :species)
-                     :onChange (field-input-handler form-input-state :species)}]]
+       [:td (editable-input form-input-state :name)]
+       [:td (editable-input form-input-state :species)]
        [:td [:button.btn.btn-primary.pull-right
              {:disabled (not (are-inputs-valid?))
               :onClick  (fn []
@@ -102,9 +101,8 @@
       [:th ""]
       [:th ""]]]
     [:tbody
-     (map-indexed
-       (fn [idx a]
-         ^{:key (str "animal-row" (:id a))}
-         [animal-row idx a])
-       (sort-by :name @animals-state))
+     (map (fn [a]
+            ^{:key (str "animal-row" (:id a))}
+            [animal-row a])
+          (sort-by :name @animals-state))
      [animal-form]]]])
