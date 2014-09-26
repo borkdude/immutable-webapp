@@ -1,0 +1,3386 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Immutable Stack</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="theme/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="theme/css/screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="theme/js/slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Immutable Stack</h1></header>
+            
+            
+            <section><p>04-10-2014</p>
+<p>Martin van Amersfoorth</p>
+<p>Michiel Borkent</p>
+<p><img alt="finalist" src="img/logo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Schedule</h1></header>
+            
+            
+            <section><ul>
+<li>Intro (10 m.)</li>
+<li>Clojure crashcourse (20 m.)</li>
+<li>Web server (10+20 m.)</li>
+<li>Web client (10+20 m.)</li>
+<li>Database (10+20 m.)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Immutable Stack</h1></header>
+            
+            
+            <section><ul>
+<li>Clojure</li>
+<li>Clojurescript</li>
+<li>Web techologies
+<strong> Ring, Compojure, Liberator
+</strong> React</li>
+<li>Datomic</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Waarom vind ik FP interessant?</h1></header>
+            
+            
+            <section><ul>
+<li>hoger abstractieniveau, elegantie, meer 'declaratief'</li>
+<li>meer doen met minder code</li>
+<li>concurrency/parallellisme</li>
+<li>nieuwsgierig: hoe los je iets op in verschillende paradigma’s?</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Wat is Clojure?</h1></header>
+            
+            
+            <section><ul>
+<li>Relatief jonge programmeertaal: 2007.</li>
+<li>Ontworpen door Rich Hickey</li>
+<li>Gebaseerd op een van de oudste programmeertalen: Lisp (1958)</li>
+<li>Ontworpen om te draaien op bestaande hostomgevingen: JVM, CLR, Javascript-engines</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Wat is Clojure?</h1></header>
+            
+            
+            <section><ul>
+<li>Keep it Simple: 'low profile architecture'</li>
+<li>Clojure is een dynamische getypeerde functionele programmeertaal</li>
+<li>Combineert een boel invloeden van andere programmeertalen</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Eigen ervaring met FP/Lisp/Clojure</h1></header>
+            
+            
+            <section><ul>
+<li>Eerste programmeervak van mijn opleiding was in Miranda, voorloper van Haskell</li>
+<li>Afstudeeropdrachten op het gebied van muzikale data en functioneel programmeren (Common Lisp)</li>
+<li>Vanaf 2009: Clojure hobbymatig</li>
+<li>In 2011 HBO-studenten onderzoek laten doen naar verschillen software ontwikkelen in Clojure vs OO</li>
+<li>In 2012 een cursus ‘Functioneel Programmeren in Clojure’ ontwikkeld,
+  loopt voor de derde keer (zie: <a href="http://michielborkent.nl/clojurecursus">http://michielborkent.nl/clojurecursus</a>)</li>
+<li>Vanaf 2013 bij Finalist commercieel project met Clojure en Datomic</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Wat is functioneel programmeren?</h1></header>
+            
+            
+            <section><ul>
+<li>Pure functies</li>
+<li>Hogere orde functies</li>
+<li>Immutability/persistente datastructuren</li>
+<li>Lazyness</li>
+</ul>
+<p>Korte uitleg van deze begrippen aan de hand van Clojure.</p>
+<p>Eerst: hoe kun je de voorbeelden uit deze sheets zelf uitproberen?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>REPL</h1></header>
+            
+            
+            <section><ul>
+<li>Interactieve manier van ontwikkelen</li>
+<li>REPL: Read Eval Print Loop<div class="highlight"><pre><span class="lineno">1</span> <span class="nv">user=&gt;</span>                         <span class="nv">&lt;-</span> <span class="nv">prompt</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>REPL</h1></header>
+            
+            
+            <section><ul>
+<li>Interactieve manier van ontwikkelen</li>
+<li>REPL: Read Eval Print Loop<div class="highlight"><pre><span class="lineno">1</span> <span class="nv">user=&gt;</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">1</span><span class="p">)</span>                 <span class="nv">&lt;-</span> <span class="nv">expressie</span>
+<span class="lineno">2</span> <span class="mi">2</span>                              <span class="nv">&lt;-</span> <span class="nv">resultaat</span>
+</pre></div>
+
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>REPL</h1></header>
+            
+            
+            <section><ul>
+<li>Interactieve manier van ontwikkelen</li>
+<li>REPL: Read Eval Print Loop<div class="highlight"><pre><span class="lineno">1</span> <span class="nv">user=&gt;</span> <span class="p">(</span><span class="nb">println </span><span class="s">&quot;hello world&quot;</span><span class="p">)</span> <span class="nv">&lt;-</span> <span class="nv">expressie</span>
+<span class="lineno">2</span> <span class="nv">hello</span> <span class="nv">world</span>                    <span class="nv">&lt;-</span> <span class="nv">side</span> <span class="nv">effect</span>
+<span class="lineno">3</span> <span class="nv">nil</span>                            <span class="nv">&lt;-</span> <span class="nv">resultaat</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Ontwikkelomgevingen</h1></header>
+            
+            
+            <section><ul>
+<li>Voor Eclipse-gebruikers: CounterClockwise plugin: <a href="https://code.google.com/p/counterclockwise/">https://code.google.com/p/counterclockwise/</a></li>
+<li>CCW is verreweg de beste en meest actief ontwikkelde plugin vergeleken met andere IDES+plugins</li>
+<li>Mocht je een extra uitdaging willen: Emacs + nrepl.el</li>
+<li>Recent ook voor Intellij: cursive clojure plugin</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>CounterClockwise</h1></header>
+            
+            
+            <section><ul>
+<li>Biedt per Clojure-project een REPL in Eclipse</li>
+<li>Biedt Leiningen ondersteuning</li>
+<li>Leiningen is Maven met een Clojure-schil eromheen (+ veel meer)</li>
+<li>Nieuw Clojure project</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>CounterClockwise</h1></header>
+            
+            
+            <section><ul>
+<li>Inhoud <code>project.clj</code>, vergelijkbaar met <code>pom.xml</code> van Maven, maar
+  dan Clojure-notatie ipv XML</li>
+<li>Clojure is zelf gewoon een dependency.</li>
+<li>Versie is dus per project
+  makkelijk in te stellen.<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defproject </span><span class="nv">gastcollege</span> <span class="s">&quot;0.1.0-SNAPSHOT&quot;</span>
+<span class="lineno">2</span>     <span class="ss">:description</span> <span class="s">&quot;FIXME: write description&quot;</span>
+<span class="lineno">3</span>     <span class="ss">:url</span> <span class="s">&quot;http://example.com/FIXME&quot;</span>
+<span class="lineno">4</span>     <span class="ss">:license</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Eclipse Public License&quot;</span>
+<span class="lineno">5</span>               <span class="ss">:url</span> <span class="s">&quot;http://www.eclipse.org/legal/epl-v10.html&quot;</span><span class="p">}</span>
+<span class="lineno">6</span>     <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span> <span class="s">&quot;1.5.1&quot;</span><span class="p">]])</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>REPL starten voor project</h1></header>
+            
+            
+            <section><p>Run as Clojure application</p>
+<p><img alt="eclipse repl" src="img/eclipse-repl.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Functieaanroep</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+<p>in plaats van:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="nx">inc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+<p>Dit noem je ook wel prefix-notatie.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>If-expressie</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nb">rand-int </span><span class="mi">10</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span>
+<span class="lineno">2</span>   <span class="s">&quot;Getal kleiner dan 5&quot;</span>
+<span class="lineno">3</span>   <span class="s">&quot;Getal groter dan of gelijk aan 5&quot;</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Let</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">x</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+<span class="lineno">2</span>       <span class="nv">y</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">)</span>
+<span class="lineno">3</span>       <span class="nv">z</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)]</span>
+<span class="lineno">4</span>   <span class="nv">z</span><span class="p">)</span> <span class="c1">;;=&gt; 21</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Terug naar wat is FP?</h1></header>
+            
+            
+            <section><h1>Imperatief programmeren</h1>
+<p>Place oriented programming</p>
+<p><img alt="imperatief" src="img/imperative-flow.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Terug naar wat is FP?</h1></header>
+            
+            
+            <section><h1>Functioneel programmeren</h1>
+<p>Value oriented programming</p>
+<p><img alt="functional" src="img/functional-flow.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Pure functies</h1></header>
+            
+            
+            <section><p>Conceptueel zoals wiskundige functie:</p>
+<ul>
+<li>gegarandeerd dezelfde output bij dezelfde input</li>
+<li>een functie-aanroep kan dus altijd vervangen worden door zijn uitkomst</li>
+<li>geen (serieuze) side effects (IO, mutatie van objecten, etc)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Pure functies</h1></header>
+            
+            
+            <section><p>De meeste functies in Clojure zijn puur.</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">10</span><span class="p">)</span> <span class="c1">;;=&gt; 11</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">11</span><span class="p">)</span> <span class="c1">;;=&gt; 12</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">count </span><span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; 3</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">count </span><span class="s">&quot;dude&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; 4</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">str </span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; &quot;foobar&quot;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Pure functies</h1></header>
+            
+            
+            <section><p>Niet-pure functies zijn echter gewoon
+mogelijk (i.t.t. Haskell)</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">rand-int </span><span class="mi">10</span><span class="p">)</span> <span class="c1">;;=&gt; 7</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">rand-int </span><span class="mi">10</span><span class="p">)</span> <span class="c1">;;=&gt; 0</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">inc </span><span class="mi">1</span><span class="p">))</span> <span class="c1">;;=&gt;</span>
+<span class="lineno">4</span> <span class="s">&quot;Elapsed time: 0.022 msecs&quot;</span> <span class="nv">&lt;-</span> <span class="nv">side</span> <span class="nv">effect</span>
+<span class="lineno">5</span> <span class="mi">2</span>                           <span class="nv">&lt;-</span> <span class="nv">resultaat</span>
+<span class="lineno">6</span> <span class="nv">user=&gt;</span> <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">inc </span><span class="mi">1</span><span class="p">))</span>
+<span class="lineno">7</span> <span class="s">&quot;Elapsed time: 0.024 msecs&quot;</span> <span class="nv">&lt;-</span> <span class="nv">side</span> <span class="nv">effect</span>
+<span class="lineno">8</span> <span class="mi">2</span>                           <span class="nv">&lt;-</span> <span class="nv">resultaat</span>
+</pre></div>
+
+<ul>
+<li>Waarom zijn <code>rand-int</code> en <code>time</code> niet puur?</li>
+<li>NB: <code>time</code> is een speciaal soort functie, nl. een macro</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Pure functies</h1></header>
+            
+            
+            <section><ul>
+<li>Makkelijker testbaar</li>
+<li>Geen afhankelijkheid van globale state (bv attributen van een klasse
+  of object)</li>
+<li>Dus makkelijker lokaal uit te proberen (REPL) en over te redeneren</li>
+<li>Veel aanroepen van pure functies zijn makkelijker te parallelliseren, omdat ze onafhankelijk van elkaar kunnen draaien</li>
+<li>Compiler kan optimaliseren (Haskell, C, …)</li>
+<li>Clojure gebruikt puurheid van functies in combinatie met
+  concurrency-mechanismen (atoms, refs, ...)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Voorbeeld atom + pure functies</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="k">def </span><span class="nv">game-state</span> <span class="p">(</span><span class="nf">atom</span> <span class="p">{</span><span class="ss">:score</span> <span class="mi">0</span><span class="p">}))</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">increase-score</span> <span class="p">[</span><span class="nv">old-state</span> <span class="nv">points</span><span class="p">]</span>
+<span class="lineno"> 4</span> <span class="p">(</span><span class="nf">update-in</span> <span class="nv">old-state</span> <span class="p">[</span><span class="ss">:score</span><span class="p">]</span> <span class="nb">+ </span><span class="nv">points</span><span class="p">))</span>
+<span class="lineno"> 5</span> 
+<span class="lineno"> 6</span> <span class="c1">;; test:</span>
+<span class="lineno"> 7</span> <span class="p">(</span><span class="nf">increase-score</span> <span class="p">{</span><span class="ss">:score</span> <span class="mi">40</span><span class="p">}</span> <span class="mi">20</span><span class="p">)</span> <span class="c1">;;=&gt; {:score 60}</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">score!</span> <span class="p">[]</span>
+<span class="lineno">10</span>   <span class="p">(</span><span class="nf">swap!</span> <span class="nv">game-state</span> <span class="nv">increase-score</span> <span class="mi">20</span><span class="p">))</span>
+<span class="lineno">11</span> 
+<span class="lineno">12</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 0}</span>
+<span class="lineno">13</span> <span class="p">(</span><span class="nf">score!</span><span class="p">)</span>
+<span class="lineno">14</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 20}</span>
+<span class="lineno">15</span> <span class="p">(</span><span class="nf">score!</span><span class="p">)</span>
+<span class="lineno">16</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 40}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Voorbeeld parallellisatie</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">reverse-str</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">apply </span><span class="nv">str</span>
+<span class="lineno">3</span>          <span class="p">(</span><span class="nb">reverse </span><span class="nv">s</span><span class="p">)))</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="p">(</span><span class="nf">reverse-str</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; &quot;oof&quot;</span>
+</pre></div>
+
+<p>Sequentieel</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">map </span><span class="nv">reverse-str</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="c1">;;=&gt; (&quot;oof&quot; &quot;rab&quot; &quot;zab&quot;)</span>
+</pre></div>
+
+<p>Parallel (1 letter verschil)</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">pmap</span> <span class="nv">reverse-str</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="c1">;;=&gt; (&quot;oof&quot; &quot;rab&quot; &quot;zab&quot;)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie</h1></header>
+            
+            
+            <section><ol>
+<li>Functie die een of meer functies als invoer heeft</li>
+<li>Of: functie die een andere functie oplevert (komen we vandaag niet
+   aan toe)</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: map</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">map inc </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">])</span> <span class="c1">;;=&gt; (2 3 4)</span>
+</pre></div>
+
+<ul>
+<li>Invoer-functie is hier <code>inc</code></li>
+<li>Past invoerfunctie toe op elk element in een collectie.</li>
+<li>Levert een nieuwe collectie op.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: filter</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">odd?</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;;=&gt; true</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nf">odd?</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">;;=&gt; false</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">range </span><span class="mi">10</span><span class="p">)</span> <span class="c1">;;=&gt; (0 1 2 3 4 5 6 7 8 9)</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">odd?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">10</span><span class="p">))</span> <span class="c1">;;=&gt; (1 3 5 7 9)</span>
+</pre></div>
+
+<ul>
+<li>Invoer-functie is hier <code>odd?</code></li>
+<li>filtert de elementen uit een collectie waarvoor functie 'logisch
+  waar' oplevert
+  (In Clojure is alles behalve <code>nil</code> en <code>false</code> logisch waar)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: reduce</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">])</span> <span class="c1">;;=&gt; 15</span>
+</pre></div>
+
+<p>Stappen:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">;;=&gt; 3</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">[</span><span class="mi">3</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">])</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">3</span> <span class="mi">3</span> <span class="p">)</span> <span class="c1">;;=&gt; 6</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">[</span><span class="mi">6</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">])</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">6</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;;=&gt; 10</span>
+<span class="lineno">7</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">[</span><span class="mi">10</span> <span class="mi">5</span><span class="p">])</span>
+<span class="lineno">8</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">10</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">;;=&gt; 15</span>
+<span class="lineno">9</span> <span class="mi">15</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: reduce</h1></header>
+            
+            
+            <section><p>Veel functies gebruiken intern <code>reduce</code>, waardoor ze zijn aan te
+roepen met een variabel aantal argumenten:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">;;=&gt; 15</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: reduce</h1></header>
+            
+            
+            <section><p>Complexere functie: <code>frequencies</code>:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="c1">;;=&gt; {&quot;foo&quot; 2, &quot;bar&quot; 2, &quot;baz&quot; 1}</span>
+</pre></div>
+
+<ul>
+<li>Hoe zou je dit kunnen aanpakken met <code>reduce</code>?</li>
+<li>We zullen dit voorbeeld zometeen gaan uitwerken, eerst kennis nodig
+  van hashmaps in Clojure</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Persistente datastructuren</h1></header>
+            
+            
+            <section><ul>
+<li>een instantie van een datastructuur wijzigt niet meer na constructie</li>
+<li>een nieuwe instantie kan gebaseerd worden op de structuur van een oudere instantie</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Lijsten (immutable)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">l1</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="k">def </span><span class="nv">l2</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">l1</span> <span class="mi">0</span><span class="p">))</span>
+<span class="lineno">3</span> <span class="nv">l2</span> <span class="c1">;;=&gt; (0 1 2 3)</span>
+</pre></div>
+
+<p>Structural sharing:</p>
+<p><img alt="list" src="img/123list.png" /></p>
+<p><img alt="list" src="file:img/0123list.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Vectoren (immutable)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">v</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">v</span><span class="p">)</span> <span class="c1">;;=&gt; (2 3)</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">v</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;;=&gt; [1 2 3 4]</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">pop </span><span class="nv">v</span><span class="p">)</span> <span class="c1">;;=&gt; [1 2]</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">assoc </span><span class="nv">v</span> <span class="mi">0</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">;;=&gt; [10 3 4]</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nb">subvec </span><span class="nv">v</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">;;=&gt; [2]</span>
+</pre></div>
+
+<p>Je kunt vectoren niet wijzigen. Wel nieuwe maken op basis van oude.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hashmaps (immutable)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="p">{</span><span class="ss">:a</span> <span class="s">&quot;foo&quot;</span>, <span class="ss">:b</span> <span class="s">&quot;bar&quot;</span><span class="p">})</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">get </span><span class="nv">m</span> <span class="ss">:a</span><span class="p">)</span> <span class="c1">;;=&gt; &quot;foo&quot;</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">get </span><span class="nv">m</span> <span class="ss">:c</span><span class="p">)</span> <span class="c1">;;=&gt; nil</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">get </span><span class="nv">m</span> <span class="ss">:c</span> <span class="ss">:not-found</span><span class="p">)</span> <span class="c1">;;=&gt; :not-found</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="ss">:c</span> <span class="s">&quot;baz&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {:a &quot;foo&quot;, :c &quot;baz&quot;, :b &quot;bar&quot;}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hashmaps (immutable)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">({</span><span class="ss">:a</span> <span class="s">&quot;foo&quot;</span> <span class="ss">:b</span> <span class="s">&quot;bar&quot;</span><span class="p">}</span> <span class="ss">:a</span><span class="p">)</span> <span class="c1">;;=&gt; &quot;foo&quot;</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="p">(</span><span class="ss">:b</span> <span class="p">{</span><span class="ss">:a</span> <span class="s">&quot;foo&quot;</span> <span class="ss">:b</span> <span class="s">&quot;bar&quot;</span><span class="p">})</span> <span class="c1">;;=&gt; &quot;bar&quot;</span>
+</pre></div>
+
+<ul>
+<li>maps zijn functies van keywords</li>
+<li>keys zijn functies van maps</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Voordelen persistente datastructuren</h1></header>
+            
+            
+            <section><ul>
+<li>Vanwege immutabiliteit voorkom je veel lastige
+  concurrency-situaties: niet hoeven nadenken over locking</li>
+<li>Zijn erg efficiënt vanwege structural sharing (geen duplicering van
+  overlappende structuur)</li>
+<li>Vrij te delen met andere softwaremodules zonder ernstige dependencies te creeëren: geen DTOs of object-clones nodig zoals in Java</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Hogere orde functie: reduce</h1></header>
+            
+            
+            <section><p>We weten nu alle ingrediënten om zelf <code>frequencies</code> te kunnen
+programmeren...</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="c1">;;=&gt; {&quot;foo&quot; 2, &quot;bar&quot; 2, &quot;baz&quot; 1}</span>
+</pre></div>
+
+<ul>
+<li>Hoe zou je dit kunnen aanpakken met <code>reduce</code>?</li>
+<li>Stap 1: maak een functie van 2 argumenten welke 1 stap van de
+  iteratie kan berekenen en test de functie</li>
+<li>Stap 2: toepassen met <code>reduce</code></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Eerst even imperatief (Python)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="n">coll</span><span class="p">):</span>
+<span class="lineno"> 2</span>   <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="lineno"> 3</span>   <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">coll</span><span class="p">:</span>
+<span class="lineno"> 4</span>     <span class="k">if</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="lineno"> 5</span>       <span class="n">result</span><span class="p">[</span><span class="n">elt</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="lineno"> 6</span>     <span class="k">else</span><span class="p">:</span>
+<span class="lineno"> 7</span>       <span class="n">result</span><span class="p">[</span><span class="n">elt</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="lineno"> 8</span>   <span class="k">return</span> <span class="n">result</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span> <span class="n">frequencies</span><span class="p">([</span><span class="s">&quot;foo&quot;</span><span class="p">,</span><span class="s">&quot;bar&quot;</span><span class="p">,</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;bar&quot;</span><span class="p">,</span><span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">11</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;baz&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><p>Maak een functie <code>f</code> zodat:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>                <span class="c1">;;=&gt; {&quot;foo&quot; 1}</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>         <span class="c1">;;=&gt; {&quot;foo&quot; 2}</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 2 &quot;bar&quot; 1}</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span>         <span class="c1">;;=&gt; {&quot;foo&quot; 1, &quot;bar&quot; 1}</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">7</span>   <span class="nv">...</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Testen definiëren in Clojure</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="nf">use</span> <span class="ss">&#39;clojure.test</span><span class="p">)</span>
+<span class="lineno"> 2</span> <span class="p">(</span><span class="kd">declare </span><span class="nv">f</span><span class="p">)</span> <span class="c1">;; f bestaat nog niet</span>
+<span class="lineno"> 3</span> <span class="p">(</span><span class="nf">deftest</span> <span class="nv">test-f</span>
+<span class="lineno"> 4</span>   <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}))</span>
+<span class="lineno"> 5</span>   <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">2</span><span class="p">}))</span>
+<span class="lineno"> 6</span>   <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">2</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}))</span>
+<span class="lineno"> 7</span>   <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span>, <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">})))</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span> <span class="p">(</span><span class="nf">run-tests</span><span class="p">)</span>
+<span class="lineno">10</span> <span class="nv">Ran</span> <span class="mi">1</span> <span class="nv">tests</span> <span class="nv">containing</span> <span class="mi">4</span> <span class="nv">assertions.</span>
+<span class="lineno">11</span> <span class="mi">0</span> <span class="nv">failures</span>, <span class="mi">4</span> <span class="nv">errors.</span>
+<span class="lineno">12</span> <span class="p">{</span><span class="ss">:type</span> <span class="ss">:summary</span>, <span class="ss">:pass</span> <span class="mi">0</span>, <span class="ss">:test</span> <span class="mi">1</span>, <span class="ss">:error</span> <span class="mi">4</span>, <span class="ss">:fail</span> <span class="mi">0</span><span class="p">}</span>
+</pre></div>
+
+<p>4 errors, want <code>f</code> is nog niet gedefiniëerd</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><p>Maak een functie <code>f</code> zodat:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>                <span class="c1">;;=&gt; {&quot;foo&quot; 1}</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">4</span>   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}))</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">(</span><span class="nf">run-tests</span><span class="p">)</span>
+<span class="lineno">7</span> 
+<span class="lineno">8</span> <span class="nv">...</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="go">Testing user</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="go">FAIL in (test-f) (NO_SOURCE_FILE:3)</span>
+<span class="lineno"> 4</span> <span class="go">expected: (= (f {&quot;foo&quot; 1} &quot;foo&quot;) {&quot;foo&quot; 2})</span>
+<span class="lineno"> 5</span> <span class="go">  actual: (not (= nil {&quot;foo&quot; 2}))</span>
+<span class="lineno"> 6</span> 
+<span class="lineno"> 7</span> <span class="go">FAIL in (test-f) (NO_SOURCE_FILE:4)</span>
+<span class="lineno"> 8</span> <span class="go">expected: (= (f {&quot;foo&quot; 1, &quot;bar&quot; 1} &quot;foo&quot;) {&quot;foo&quot; 2, &quot;bar&quot; 1})</span>
+<span class="lineno"> 9</span> <span class="go">  actual: (not (= nil {&quot;foo&quot; 2, &quot;bar&quot; 1}))</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span> <span class="go">FAIL in (test-f) (NO_SOURCE_FILE:5)</span>
+<span class="lineno">12</span> <span class="go">expected: (= (f {&quot;foo&quot; 1} &quot;bar&quot;) {&quot;foo&quot; 1, &quot;bar&quot; 1})</span>
+<span class="lineno">13</span> <span class="go">  actual: (not (= nil {&quot;foo&quot; 1, &quot;bar&quot; 1}))</span>
+<span class="lineno">14</span> 
+<span class="lineno">15</span> <span class="go">Ran 1 tests containing 4 assertions.</span>
+<span class="lineno">16</span> <span class="go">3 failures, 0 errors.</span>
+<span class="lineno">17</span> <span class="go">{:type :summary, :pass 1, :test 1, :error 0, :fail 3}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><p>Maak een functie <code>f</code> zodat:</p>
+<div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">2</span><span class="p">}))</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="p">(</span><span class="nb">contains? </span><span class="p">{</span><span class="ss">:a</span> <span class="mi">1</span> <span class="ss">:b</span> <span class="mi">2</span><span class="p">}</span> <span class="ss">:a</span><span class="p">)</span> <span class="c1">;;=&gt; true</span>
+<span class="lineno"> 4</span> <span class="p">(</span><span class="nb">contains? </span><span class="p">{</span><span class="ss">:a</span> <span class="mi">1</span> <span class="ss">:b</span> <span class="mi">2</span><span class="p">}</span> <span class="ss">:c</span><span class="p">)</span> <span class="c1">;;=&gt; false</span>
+<span class="lineno"> 5</span> 
+<span class="lineno"> 6</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno"> 7</span>   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno"> 8</span>     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno"> 9</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">))))))</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span> <span class="p">(</span><span class="nf">run-tests</span><span class="p">)</span>
+<span class="lineno">12</span> <span class="nv">...</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="go">Testing user</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="go">FAIL in (test-f) (NO_SOURCE_FILE:5)</span>
+<span class="lineno">4</span> <span class="go">expected: (= (f {&quot;foo&quot; 1} &quot;bar&quot;) {&quot;foo&quot; 1, &quot;bar&quot; 1})</span>
+<span class="lineno">5</span> <span class="go">  actual: (not (= nil {&quot;foo&quot; 1, &quot;bar&quot; 1}))</span>
+<span class="lineno">6</span> 
+<span class="lineno">7</span> <span class="go">Ran 1 tests containing 4 assertions.</span>
+<span class="lineno">8</span> <span class="go">1 failures, 0 errors.</span>
+<span class="lineno">9</span> <span class="go">{:type :summary, :pass 3, :test 1, :error 0, :fail 1}</span>
+</pre></div>
+
+<p>NB, de case</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">is</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">2</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}))</span>
+</pre></div>
+
+<p>slaagt ook al.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 1</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno"> 2</span>   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno"> 3</span>     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno"> 4</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno"> 5</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="lineno"> 6</span> 
+<span class="lineno"> 7</span> <span class="p">(</span><span class="nf">run-tests</span><span class="p">)</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span> <span class="nv">Testing</span> <span class="nv">user</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span> <span class="nv">Ran</span> <span class="mi">1</span> <span class="nv">tests</span> <span class="nv">containing</span> <span class="mi">4</span> <span class="nv">assertions.</span>
+<span class="lineno">12</span> <span class="mi">0</span> <span class="nv">failures</span>, <span class="mi">0</span> <span class="nv">errors.</span>
+<span class="lineno">13</span> <span class="p">{</span><span class="ss">:type</span> <span class="ss">:summary</span>, <span class="ss">:pass</span> <span class="mi">4</span>, <span class="ss">:test</span> <span class="mi">1</span>, <span class="ss">:error</span> <span class="mi">0</span>, <span class="ss">:fail</span> <span class="mi">0</span><span class="p">}</span>
+</pre></div>
+
+<p>Het werkt! Nog niet helemaal 'idiomatic'. Zometeen refactoren. Nu
+eerst even stap 2.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="nv">user=&gt;</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">f</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="nv">IllegalArgumentException</span> <span class="nb">contains? not </span><span class="nv">supported</span> <span class="nv">on</span> <span class="nv">type</span><span class="err">:</span>
+<span class="lineno">3</span> <span class="nv">java.lang.String</span>  <span class="nv">clojure.lang.RT.contains</span> <span class="p">(</span><span class="nf">RT.java</span><span class="ss">:724</span><span class="p">)</span>
+</pre></div>
+
+<p>Dit klopt. Functie <code>f</code> verwacht een map en een element (string).</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">f</span> <span class="p">{}</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="c1">;;=&gt; {&quot;baz&quot; 1, &quot;bar&quot; 2, &quot;foo&quot; 2}</span>
+</pre></div>
+
+<p>Zelfde als:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">f</span> <span class="p">[{}</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;bar&quot;</span> <span class="s">&quot;foo&quot;</span> <span class="s">&quot;baz&quot;</span><span class="p">])</span>
+</pre></div>
+
+<p>Stappen:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 1}</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 1 &quot;bar&quot; 1}</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 1 &quot;bar&quot; 2}</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">2</span><span class="p">}</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 2 &quot;bar&quot; 2}</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nf">f</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">2</span> <span class="s">&quot;bar&quot;</span> <span class="mi">2</span><span class="p">}</span> <span class="s">&quot;baz&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;baz&quot; 1, &quot;bar&quot; 2, &quot;foo&quot; 2}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><p>De functie <code>frequencies</code>:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno">3</span>     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno">4</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno">5</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="lineno">6</span> 
+<span class="lineno">7</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">8</span>   <span class="p">(</span><span class="nb">reduce </span><span class="nv">f</span> <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><p>De functie <code>frequencies</code>:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn- </span><span class="nv">f</span> <span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span> <span class="c1">;; private function</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno">3</span>     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno">4</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno">5</span>       <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="lineno">6</span> 
+<span class="lineno">7</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">8</span>   <span class="p">(</span><span class="nb">reduce </span><span class="nv">f</span> <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><p>De functie <code>frequencies</code>:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">reducefn</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span> <span class="c1">;; local function</span>
+<span class="lineno">3</span>                    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno">4</span>                      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno">5</span>                        <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno">6</span>                        <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">))))]</span>
+<span class="lineno">7</span>   <span class="p">(</span><span class="nb">reduce </span><span class="nv">reducefn</span> <span class="p">{}</span> <span class="nv">coll</span><span class="p">)))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><p>De functie <code>frequencies</code>:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span> <span class="c1">;; anonymous function</span>
+<span class="lineno">3</span>             <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+<span class="lineno">4</span>               <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno">5</span>                 <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno">6</span>                 <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="lineno">7</span>           <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+
+<p>De reduce-functie kan mooier/korter.
+Overbodige case, wie ziet 'em?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              53/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>assoc</h1></header>
+            
+            
+            <section><p>Indien lege map meegegeven:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="p">{})</span> <span class="p">{</span><span class="nv">e</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+
+<p>Indien niet lege map en key zat nog niet in de map:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">assoc </span><span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">}</span> <span class="s">&quot;bar&quot;</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 1 &quot;bar&quot; 1}</span>
+</pre></div>
+
+<p>Maar:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">assoc </span><span class="p">{}</span> <span class="s">&quot;foo&quot;</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;;=&gt; {&quot;foo&quot; 1}</span>
+</pre></div>
+
+<p>Dus 'special case' is onnodig.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              54/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">3</span>             <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">contains? </span><span class="nv">m</span> <span class="nv">e</span><span class="p">)</span>
+<span class="lineno">4</span>               <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span><span class="p">)))</span>
+<span class="lineno">5</span>               <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="lineno">6</span>           <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+
+<p>De reduce-functie kan nóg mooier/korter.
+Wie heeft een suggestie?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              55/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Map lookup met default waarde</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">2</span><span class="p">})</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nf">m</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; 1</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nf">m</span> <span class="s">&quot;bar&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; 2</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nf">m</span> <span class="s">&quot;baz&quot;</span><span class="p">)</span> <span class="c1">;;=&gt; nil</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nf">m</span> <span class="s">&quot;baz&quot;</span> <span class="ss">:not-found</span><span class="p">)</span> <span class="c1">;;=&gt; :not-found</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nf">m</span> <span class="s">&quot;baz&quot;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">;;=&gt; 0</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              56/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Stap 2</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">3</span>               <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span> <span class="mi">0</span><span class="p">))))</span>
+<span class="lineno">4</span>           <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              57/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Functioneel vs imperatief</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span> <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">e</span><span class="p">]</span>
+<span class="lineno">3</span>               <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">e</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">m</span> <span class="nv">e</span> <span class="mi">0</span><span class="p">))))</span>
+<span class="lineno">4</span>           <span class="p">{}</span> <span class="nv">coll</span><span class="p">))</span>
+</pre></div>
+
+<p>vs</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="n">coll</span><span class="p">):</span>
+<span class="lineno">2</span>   <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="lineno">3</span>   <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">coll</span><span class="p">:</span>
+<span class="lineno">4</span>     <span class="k">if</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="lineno">5</span>       <span class="n">result</span><span class="p">[</span><span class="n">elt</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="lineno">6</span>     <span class="k">else</span><span class="p">:</span>
+<span class="lineno">7</span>       <span class="n">result</span><span class="p">[</span><span class="n">elt</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="lineno">8</span>   <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              58/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>frequencies in clojure.core:</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">frequencies</span>
+<span class="lineno"> 2</span>   <span class="s">&quot;Returns a map from distinct items in coll to the number of times</span>
+<span class="lineno"> 3</span> <span class="s">  they appear.&quot;</span>
+<span class="lineno"> 4</span>   <span class="p">{</span><span class="ss">:added</span> <span class="s">&quot;1.2&quot;</span>
+<span class="lineno"> 5</span>    <span class="ss">:static</span> <span class="nv">true</span><span class="p">}</span>
+<span class="lineno"> 6</span>   <span class="p">[</span><span class="nv">coll</span><span class="p">]</span>
+<span class="lineno"> 7</span>   <span class="p">(</span><span class="nf">persistent!</span>
+<span class="lineno"> 8</span>    <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">counts</span> <span class="nv">x</span><span class="p">]</span>
+<span class="lineno"> 9</span>              <span class="p">(</span><span class="nf">assoc!</span> <span class="nv">counts</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">get </span><span class="nv">counts</span> <span class="nv">x</span> <span class="mi">0</span><span class="p">))))</span>
+<span class="lineno">10</span>            <span class="p">(</span><span class="nf">transient</span> <span class="p">{})</span> <span class="nv">coll</span><span class="p">)))</span>
+</pre></div>
+
+<p>Transients optimalisatie, algoritme is hetzelfde.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              59/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Webapplicatie woorden tellen</h1></header>
+            
+            
+            <section><p>In Eclipse:</p>
+<ul>
+<li>New Clojure project genaamd <code>freqweb</code></li>
+<li>Template: compojure-app (zie
+  <a href="https://github.com/yogthos/compojure-template">https://github.com/yogthos/compojure-template</a>)</li>
+<li>Open source file <code>freqweb.repl.clj</code></li>
+<li>In Clojure-menu: Load file in REPL (Ctrl-Alt-L of Cmd-Alt-L)</li>
+<li>In REPL: <code>(start-server)</code></li>
+<li>Browser opent zich met 'Hello World'</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              60/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Textarea toevoegen</h1></header>
+            
+            
+            <section><p>In <code>freqweb.routes.home.clj</code></p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">ns </span><span class="nv">freqweb.routes.home</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">compojure.core</span> <span class="ss">:refer</span> <span class="ss">:all</span><span class="p">]</span>
+<span class="lineno">3</span>             <span class="p">[</span><span class="nv">freqweb.views.layout</span> <span class="ss">:as</span> <span class="nv">layout</span><span class="p">])</span>
+<span class="lineno">4</span>   <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">hiccup.form</span><span class="p">]))</span> <span class="c1">;; &lt;-</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              61/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Textarea toevoegen</h1></header>
+            
+            
+            <section><p>In <code>freqweb.routes.home.clj</code></p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">home</span> <span class="p">[]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nf">layout/common</span>
+<span class="lineno">3</span>     <span class="p">[</span><span class="ss">:div</span>
+<span class="lineno">4</span>      <span class="p">[</span><span class="ss">:p</span> <span class="s">&quot;Please enter some text for analysis&quot;</span><span class="p">]</span>
+<span class="lineno">5</span>      <span class="p">(</span><span class="nf">form-to</span> <span class="p">[</span><span class="ss">:post</span> <span class="s">&quot;/myresult&quot;</span><span class="p">]</span>
+<span class="lineno">6</span>               <span class="p">(</span><span class="nf">text-area</span> <span class="p">{</span><span class="ss">:rows</span> <span class="s">&quot;4&quot;</span> <span class="ss">:cols</span> <span class="s">&quot;50&quot;</span><span class="p">}</span> <span class="s">&quot;mytext&quot;</span><span class="p">)</span>
+<span class="lineno">7</span>               <span class="p">[</span><span class="ss">:br</span><span class="p">]</span>
+<span class="lineno">8</span>               <span class="p">(</span><span class="nf">submit-button</span> <span class="s">&quot;Send&quot;</span><span class="p">))]))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              62/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>De eerste pagina</h1></header>
+            
+            
+            <section><p><img alt="foo" src="img/home.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              63/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Afhandeling POST</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">myresult</span> <span class="p">[</span><span class="nv">text</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">words</span> <span class="p">(</span><span class="nf">clojure.string/split</span> <span class="nv">text</span> <span class="o">#</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+<span class="lineno">3</span>         <span class="nv">freqs</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="nv">words</span><span class="p">)]</span>
+<span class="lineno">4</span>    <span class="p">(</span><span class="nf">layout/common</span> <span class="p">[</span><span class="ss">:p</span> <span class="p">(</span><span class="nb">str </span><span class="nv">freqs</span><span class="p">)])))</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">(</span><span class="nf">defroutes</span> <span class="nv">home-routes</span>
+<span class="lineno">7</span>   <span class="p">(</span><span class="nf">GET</span> <span class="s">&quot;/&quot;</span> <span class="p">[]</span> <span class="p">(</span><span class="nf">home</span><span class="p">))</span>
+<span class="lineno">8</span>   <span class="p">(</span><span class="nf">POST</span> <span class="s">&quot;/myresult&quot;</span> <span class="p">[</span><span class="nv">mytext</span><span class="p">]</span> <span class="p">(</span><span class="nf">myresult</span> <span class="nv">mytext</span><span class="p">)))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              64/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Tekst invullen</h1></header>
+            
+            
+            <section><p><img alt="foo" src="img/text-input.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              65/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Resultaat (ruwe data)</h1></header>
+            
+            
+            <section><h2><img alt="foo" src="img/freqs-browser.png" /></h2>
+<h1>Verbetering?</h1>
+<p>Hoe tonen we bijvoorbeeld de top 5 resultaten in een mooie tabel?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              66/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Sorteren van collecties</h1></header>
+            
+            
+            <section><p>Bijvoorbeeld sorteren op lengte van strings</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">sort </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span> <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nb">count </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">count </span><span class="nv">b</span><span class="p">)))</span>
+<span class="lineno">2</span>       <span class="p">[</span><span class="s">&quot;dog&quot;</span> <span class="s">&quot;elephant&quot;</span> <span class="s">&quot;bird&quot;</span><span class="p">])</span>
+<span class="lineno">3</span> <span class="c1">;;=&gt; (&quot;dog&quot; &quot;bird&quot; &quot;elephant&quot;)</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">sort-by count &lt; </span><span class="p">[</span><span class="s">&quot;dog&quot;</span> <span class="s">&quot;elephant&quot;</span> <span class="s">&quot;bird&quot;</span><span class="p">])</span>
+<span class="lineno">5</span> <span class="c1">;;=&gt; (&quot;dog&quot; &quot;bird&quot; &quot;elephant&quot;)</span>
+</pre></div>
+
+<p>(Vraag: is <code>sort</code> een hogere orde functie?)</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              67/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Map als collectie sorteren</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="p">{</span><span class="s">&quot;foo&quot;</span> <span class="mi">1</span> <span class="s">&quot;bar&quot;</span> <span class="mi">2</span> <span class="s">&quot;baz&quot;</span> <span class="mi">4</span> <span class="s">&quot;qux&quot;</span> <span class="mi">3</span><span class="p">})</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">seq </span><span class="nv">m</span><span class="p">)</span> <span class="c1">;;=&gt; ([&quot;foo&quot; 1] [&quot;bar&quot; 2] [&quot;qux&quot; 3] [&quot;baz&quot; 4])</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">sort </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span> <span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">second </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">second </span><span class="nv">b</span><span class="p">)))</span> <span class="nv">m</span><span class="p">)</span>
+<span class="lineno">4</span> <span class="c1">;;=&gt; ([&quot;baz&quot; 4] [&quot;qux&quot; 3] [&quot;bar&quot; 2] [&quot;foo&quot; 1])</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">sort-by second &gt; </span><span class="nv">m</span><span class="p">)</span>
+<span class="lineno">6</span> <span class="c1">;;=&gt; ([&quot;baz&quot; 4] [&quot;qux&quot; 3] [&quot;bar&quot; 2] [&quot;foo&quot; 1])</span>
+<span class="lineno">7</span> <span class="p">(</span><span class="nb">take </span><span class="mi">2</span> <span class="p">(</span><span class="nb">sort-by second &gt; </span><span class="nv">m</span><span class="p">))</span> <span class="c1">;;=&gt; ([&quot;baz&quot; 4] [&quot;qux&quot; 3])</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              68/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Top 5 van frequentietabel</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">select-top-5</span> <span class="p">[</span><span class="nv">freqs</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="nb">take </span><span class="mi">5</span> <span class="p">(</span><span class="nb">sort-by second &gt; </span><span class="nv">freqs</span><span class="p">)))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              69/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Nieuwe resultaatpagina</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">myresult</span> <span class="p">[</span><span class="nv">text</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">words</span> <span class="p">(</span><span class="nf">clojure.string/split</span> <span class="nv">text</span> <span class="o">#</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+<span class="lineno">3</span>         <span class="nv">freqs</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="nv">words</span><span class="p">)</span>
+<span class="lineno">4</span>         <span class="nv">top5</span> <span class="p">(</span><span class="nf">select-top-5</span> <span class="nv">freqs</span><span class="p">)]</span>
+<span class="lineno">5</span>    <span class="p">(</span><span class="nf">layout/common</span> <span class="p">[</span><span class="ss">:p</span> <span class="p">(</span><span class="nb">for </span><span class="p">[[</span><span class="nv">word</span> <span class="nv">amount</span><span class="p">]</span> <span class="nv">top5</span><span class="p">]</span>
+<span class="lineno">6</span>                         <span class="p">[</span><span class="ss">:p</span> <span class="s">&quot;The word &quot;</span> <span class="nv">word</span>
+<span class="lineno">7</span>                             <span class="s">&quot; occurs &quot;</span> <span class="nv">amount</span> <span class="s">&quot; times&quot;</span><span class="p">])]</span>
+<span class="lineno">8</span>                   <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="s">&quot;/&quot;</span><span class="p">}</span> <span class="s">&quot;Back&quot;</span><span class="p">])))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              70/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Nieuwe resultaatpagina</h1></header>
+            
+            
+            <section><p><img alt="foo" src="img/new-result.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              71/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Meer leren</h1></header>
+            
+            
+            <section><p><a href="http://www.4clojure.com">http://www.4clojure.com</a></p>
+<p><img alt="fourclojure" src="img/4clojure.png" />
+x</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              72/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Meer leren</h1></header>
+            
+            
+            <section><p><a href="http://www.clojurebook.com">http://www.clojurebook.com</a></p>
+<p><img alt="fourclojure" src="img/clojurebook.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              73/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Meer leren</h1></header>
+            
+            
+            <section><p><a href="http://michielborkent.nl/clojurecursus">http://michielborkent.nl/clojurecursus</a></p>
+<p><img alt="fourclojure" src="img/clojurecursus.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              74/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Einde</h1></header>
+            
+            
+            <section><p>Bedankt voor jullie aandacht!</p>
+<p>Vragen?</p>
+<ul>
+<li>Twitter: <a href="http://www.twitter.com/borkdude">@borkdude</a></li>
+<li>Homepagina: <a href="http://michielborkent.nl">http://michielborkent.nl</a></li>
+</ul>
+<p><img alt="finalist" src="img/logo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              75/75
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">The Immutable Stack</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Schedule</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">The Immutable Stack</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Waarom vind ik FP interessant?</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Wat is Clojure?</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Wat is Clojure?</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Eigen ervaring met FP/Lisp/Clojure</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Wat is functioneel programmeren?</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">REPL</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">REPL</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">REPL</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Ontwikkelomgevingen</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">CounterClockwise</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">CounterClockwise</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">REPL starten voor project</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Functieaanroep</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">If-expressie</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Let</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Terug naar wat is FP?</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Terug naar wat is FP?</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Pure functies</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Pure functies</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Pure functies</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Pure functies</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Voorbeeld atom + pure functies</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Voorbeeld parallellisatie</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Hogere orde functie</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Hogere orde functie: map</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Hogere orde functie: filter</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Hogere orde functie: reduce</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Hogere orde functie: reduce</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Hogere orde functie: reduce</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Persistente datastructuren</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Lijsten (immutable)</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Vectoren (immutable)</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Hashmaps (immutable)</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Hashmaps (immutable)</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Voordelen persistente datastructuren</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Hogere orde functie: reduce</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Eerst even imperatief (Python)</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Stap 1</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">Testen definiëren in Clojure</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Stap 1</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Stap 1</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">Stap 1</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Stap 1</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Stap 1</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">Stap 2</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Stap 2</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Stap 2</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">Stap 2</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">Stap 2</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-53">
+        <th><a href="#slide53">Stap 2</a></th>
+        <td><a href="#slide53">53</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-54">
+        <th><a href="#slide54">assoc</a></th>
+        <td><a href="#slide54">54</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-55">
+        <th><a href="#slide55">Stap 2</a></th>
+        <td><a href="#slide55">55</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-56">
+        <th><a href="#slide56">Map lookup met default waarde</a></th>
+        <td><a href="#slide56">56</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-57">
+        <th><a href="#slide57">Stap 2</a></th>
+        <td><a href="#slide57">57</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-58">
+        <th><a href="#slide58">Functioneel vs imperatief</a></th>
+        <td><a href="#slide58">58</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-59">
+        <th><a href="#slide59">frequencies in clojure.core:</a></th>
+        <td><a href="#slide59">59</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-60">
+        <th><a href="#slide60">Webapplicatie woorden tellen</a></th>
+        <td><a href="#slide60">60</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-61">
+        <th><a href="#slide61">Textarea toevoegen</a></th>
+        <td><a href="#slide61">61</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-62">
+        <th><a href="#slide62">Textarea toevoegen</a></th>
+        <td><a href="#slide62">62</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-63">
+        <th><a href="#slide63">De eerste pagina</a></th>
+        <td><a href="#slide63">63</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-64">
+        <th><a href="#slide64">Afhandeling POST</a></th>
+        <td><a href="#slide64">64</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-65">
+        <th><a href="#slide65">Tekst invullen</a></th>
+        <td><a href="#slide65">65</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-66">
+        <th><a href="#slide66">Resultaat (ruwe data)</a></th>
+        <td><a href="#slide66">66</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-67">
+        <th><a href="#slide67">Sorteren van collecties</a></th>
+        <td><a href="#slide67">67</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-68">
+        <th><a href="#slide68">Map als collectie sorteren</a></th>
+        <td><a href="#slide68">68</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-69">
+        <th><a href="#slide69">Top 5 van frequentietabel</a></th>
+        <td><a href="#slide69">69</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-70">
+        <th><a href="#slide70">Nieuwe resultaatpagina</a></th>
+        <td><a href="#slide70">70</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-71">
+        <th><a href="#slide71">Nieuwe resultaatpagina</a></th>
+        <td><a href="#slide71">71</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-72">
+        <th><a href="#slide72">Meer leren</a></th>
+        <td><a href="#slide72">72</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-73">
+        <th><a href="#slide73">Meer leren</a></th>
+        <td><a href="#slide73">73</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-74">
+        <th><a href="#slide74">Meer leren</a></th>
+        <td><a href="#slide74">74</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-75">
+        <th><a href="#slide75">Einde</a></th>
+        <td><a href="#slide75">75</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
