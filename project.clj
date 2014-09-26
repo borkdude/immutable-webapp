@@ -6,36 +6,27 @@
                  [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [ring/ring-core "1.3.1"]
                  [ring/ring-jetty-adapter "1.3.1"]
-                 [om "0.7.1"]
-                 [ankha "0.1.4"]
                  [org.webjars/react "0.11.1"]
                  [org.webjars/bootstrap "3.2.0"]
                  [cljs-http "0.1.14"]
                  [compojure "1.1.8"]
                  [liberator "0.12.0"]
-                 [com.taoensso/timbre "3.2.1"]
                  [fogus/ring-edn "0.2.0"]
-                 [domina "1.0.2"]
                  [clj-json "0.5.3"]
                  [hiccup "1.0.5"]
-                 [figwheel "0.1.4-SNAPSHOT"]]
+                 [reagent "0.4.2"]
+                 [sablono "0.2.22"]]
   :plugins [[lein-ring "0.8.10"]
-            [lein-cljsbuild "1.0.4-SNAPSHOT"]
-            [lein-figwheel "0.1.4-SNAPSHOT"]]
+            [lein-cljsbuild "1.0.4-SNAPSHOT"]]
   :source-paths ["src"]
   :cljsbuild {
-    :builds [{:id "webapp"
-              :source-paths ["src"]
-              :compiler {
-                :output-to "resources/public/main.js"
-                :output-dir "resources/public/out"
-                :optimizations :none
-                :source-map true}}]}
+              :builds [{:id "webapp"
+                        :source-paths ["src"]
+                        :compiler {:output-to "resources/public/main.js"
+                                   :output-dir "resources/public/out"
+                                   :optimizations :none
+                                   :source-map true}}]}
   :ring {:handler webapp.api/handler
          :nrepl {:start? true :port 4500}
          :port 8090}
-  :figwheel {:http-server-root "public"
-             :server-port 8090
-             :css-dirs ["resources/public/css"]
-             :ring-handler webapp.api/handler}
   :global-vars {*print-length* 20})

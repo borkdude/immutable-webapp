@@ -1,27 +1,32 @@
 (ns webapp.db)
 
-(defonce max-id (atom 0))
+(def max-id (atom 0))
+
+(def records (atom {}))
 
 (defn next-id
   [] (swap! max-id inc))
 
-(defn create
-  [a m]
+(defn create!
+  [m]
   (let [id (next-id)]
-    (swap! a assoc id (assoc m :id id))))
+    (swap! records assoc id (assoc m :id id))
+    id))
 
 (defn read
-  ([a]
-     (vals (deref a)))
-  ([a id]
-     (get (deref a) id)))
+  ([id]
+     (get (deref records) id))
+  ([k v]
+     (filter #(= (get % k) v) (vals (deref records)))))
 
-(defn update
-  [a id m]
-  (when (contains? (deref a) id)
-    (swap! a update-in [id] merge m)))
+(defn update!
+  [id m]
+  (when (contains? (deref records) id)
+    (swap! records update-in [id] merge m)
+    nil))
 
-(defn delete
-  [a id]
-  (if (get (deref a) id)
-    (swap! a dissoc id)))
+(defn delete!
+  [id]
+  (if (contains? (deref records) id)
+    (swap! records dissoc id)
+    nil))
