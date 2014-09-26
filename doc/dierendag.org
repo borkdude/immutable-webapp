@@ -1,0 +1,41 @@
+
+* Devnology Community Day - Immutable Stack workshop
+
+** Programma
+
+*** Immutable Stack (10)
+**** Intro devs
+**** Clojure en ClojureScript
+**** Datomic
+**** Leiningen
+**** Web server technologies
+***** Ring
+***** Compojure
+***** Liberator
+***** Schema
+***** Hiccup
+**** Web client technologies - react-wrappers: Om en Reagent
+***** core.async
+***** Transit (optioneel)
+***** Sablono
+*** Clojure en ClojureScript - syntax (20)
+
+*** Web server technologies (10+20)
+**** Ring (demo)
+**** Compojure (demo)
+**** Liberator (applicatie) - animals
+**** Oefening: route + resource - books
+
+*** Web client technologies (10+20)
+**** ClojureScript
+**** Reagent
+**** core-async
+**** cljs-http
+**** Applicatie: lijst van animals tonen (met CRUD ops)
+**** Oefening: lijst van books tonen (zonder CRUD, alleen get) 
+
+*** Database (10+20)
+**** Datomic
+**** Datalog 5 minute crash course
+**** Applicatie: ipv memory db -> datomic
+**** Oefening: queries met Datalog
