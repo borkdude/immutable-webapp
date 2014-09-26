@@ -231,3 +231,179 @@ Stappen:
     (reduce + [10 5])
     (+ 10 5) ;;=> 15
     15
+
+---
+
+# Datalog in 6 minutes
+
+---
+
+# Query Anatomy
+
+Clojure
+
+	!clojure
+	(q ('[:find ...
+	      :in ...
+	      :where ...]
+	      input1
+	      ...
+	      inputN))
+	
+.notes: :where - constraints, :in - inputs, :find - variables to return
+	
+---
+
+# Variables and Constants
+
+Variables
+
+* ?customer
+* ?product
+* ?orderId
+* ?email
+	
+Constants
+
+* 42
+* :email
+* "john"
+* :order/id
+* \#instant "2012-02-29"
+
+---
+
+# Data Pattern: E-A-V
+
+	!html
+	-------------------------------------------
+	| entity | attribute | value              |
+	-------------------------------------------
+	| 42     | :email	  | jdoe@example.com  |
+	| 43     | :email     | jane@example.com  |
+	| 42     | :orders    | 107               |
+	| 42     | :orders    | 141               |
+	-------------------------------------------
+
+Constrain the results returned, binds variables
+
+	!clojure
+	[?customer :email ?email]
+-> jdoe@example.com, jane@example.com
+
+	!clojure
+	[42 :email ?email]
+-> jdoe@example.com
+	
+---
+
+# Data Pattern: E-A-V
+
+	!html
+	-------------------------------------------
+	| entity | attribute | value              |
+	-------------------------------------------
+	| 42     | :email	  | jdoe@example.com  |
+	| 43     | :email     | jane@example.com  |
+	| 42     | :orders    | 107               |
+	| 42     | :orders    | 141               |
+	-------------------------------------------
+
+What attributes does customer 42 have?
+
+	!clojure
+	[42 ?attribute]
+-> :email, :orders
+
+What attributes and values does customer 42 have?
+
+	!clojure
+	[42 ?attribute ?value]
+-> :email - jdoe@example.com, :orders - 107, 141
+
+--- 
+
+# Where Clause
+
+Where to put the data pattern?
+
+	!clojure
+	[:find ?customer
+	 :where [?customer :email]]
+	
+Implicit Join
+
+	!clojure
+	[:find ?customer
+	 :where [?customer :email]
+	        [?customer :orders]]
+
+---
+
+# Input(s)
+
+	!clojure
+	(q '[:find ?customer :in $ :where [?customer :id] [?customer :orders]]
+       db)
+	
+Find using $database and ?email:
+
+	!clojure
+	(q '[:find ?customer :in $ ?email :where [?customer :email ?email]]
+	    db "jdoe@example.com")
+	
+---
+
+# Predicates
+
+Functional constraints that can appear in a :where clause
+
+	!clojure
+	[(< 50.0 ?price)]
+	
+Find the expensive items
+
+	!clojure
+	[:find ?item
+	 :where [?item :item/price ?price]
+	        [(< 50.0 ?price)]]
+	
+---
+
+# Aggregates
+
+The syntax is incorporated in the :find clause:
+
+    !clojure
+    [:find ?a (min ?b) (max ?b) ?c (sample 12 ?d) :where ...]
+
+The list expressions are aggregate expressions. 
+Query variables not in aggregate expressions will group the results and appear intact in the result. 
+
+The included aggregation functions are:
+
+* min, max
+* count, count-distinct
+* sum, avg, median
+* variance, stddev
+* rand
+	
+---
+
+# Functions
+
+	!clojure
+	[(shipping ?zip ?weight) ?cost]
+	
+Call functions by binding inputs:
+
+	!clojure
+	[:find ?customer ?product
+	 :where [?customer :shipAddress ?address]
+	        [?address :zip ?zip]
+	        [?product :product/weight ?weight]
+	        [?product :product/price ?price]
+	        [(Shipping/estimate ?zip ?weight) ?shipCost]
+	        [(<= ?price ?shipCost)]]
+	
+Or: find me the customer/product combinations where the shipping cost dominates the product cost.

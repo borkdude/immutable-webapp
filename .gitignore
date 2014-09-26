@@ -10,3 +10,4 @@ resources/public/out
 .lein-plugins/
 *.iml
 .nrepl-port
+/doc/*.html
