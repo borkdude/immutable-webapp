@@ -1,20 +1,7 @@
 (ns webapp.animals
   (:require [webapp.db :as db]))
 
-(def animals
-  (ref
-   {1 {:id (db/next-id)
-       :name "Painted-snipe"
-       :species "Rostratulidae"
-       :img "0636920013754.gif"}
-    2 {:id (db/next-id)
-       :name "Aardwolf"
-       :species "Proteles cristata"
-       :img "0636920029786.gif"}
-    3 {:id (db/next-id)
-       :name "Yellow-backed duiker"
-       :species "Cephalophus silvicultor"
-       :img "0636920025139.gif"}}))
+(defonce animals (atom {}))
 
 (defn create
   [a]
@@ -33,3 +20,15 @@
 (defn delete
   [id]
   (db/delete animals id))
+
+(create {:name "Painted-snipe"
+         :species "Rostratulidae"
+         :img "0636920013754.gif"})
+
+(create {:name "Aardwolf"
+         :species "Proteles cristata"
+         :img "0636920029786.gif"})
+
+(create {:name "Yellow-backed duiker"
+         :species "Cephalophus silvicultor"
+         :img "0636920025139.gif"})

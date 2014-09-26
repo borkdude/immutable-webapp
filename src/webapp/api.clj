@@ -1,5 +1,6 @@
 (ns webapp.api
   (:require [webapp.html :as html]
+            [webapp.animals :as animals]
             [liberator.core :refer (resource)]
             [compojure.core :refer (defroutes ANY)]
             [ring.middleware.params :refer (wrap-params)]
@@ -14,11 +15,11 @@
         :available-media-types ["application/edn" "application/json" "text/html"]
         :allowed-methods [:get]
         :handle-ok (fn [ctx]
-                     (let [animals {:animals [{:name "Foo"}]}]
+                     (let [found (animals/read)]
                        (condp = (-> ctx :representation :media-type)
-                         "application/edn" animals
-                         "application/json" (json/generate-string animals)
-                         "text/html" (html/generate-string animals))))))
+                         "application/edn" found
+                         "application/json" (json/generate-string found)
+                         "text/html" (html/generate-string found))))))
   (ANY "/"
        []
        (redirect "/animals")))

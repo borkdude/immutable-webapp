@@ -17,9 +17,11 @@
                  [fogus/ring-edn "0.2.0"]
                  [domina "1.0.2"]
                  [clj-json "0.5.3"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [figwheel "0.1.4-SNAPSHOT"]]
   :plugins [[lein-ring "0.8.10"]
-            [lein-cljsbuild "1.0.4-SNAPSHOT"]]
+            [lein-cljsbuild "1.0.4-SNAPSHOT"]
+            [lein-figwheel "0.1.4-SNAPSHOT"]]
   :source-paths ["src"]
   :cljsbuild {
     :builds [{:id "webapp"
@@ -32,4 +34,8 @@
   :ring {:handler webapp.api/handler
          :nrepl {:start? true :port 4500}
          :port 8090}
+  :figwheel {:http-server-root "public"
+             :server-port 8090
+             :css-dirs ["resources/public/css"]
+             :ring-handler webapp.api/handler}
   :global-vars {*print-length* 20})
