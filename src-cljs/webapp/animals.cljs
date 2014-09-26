@@ -39,15 +39,16 @@
          {:onClick #(remove-animal a)}
          "\u00D7"]]])
 
+(go (let [response
+          (<! (http/get "/animals"))
+          data (:body response)]
+      (println "this once")
+      (reset! animals-state (set data))))
+
 (defn animals []
-      (go (let [response
-                (<! (http/get "/animals"))
-                data (:body response)]
-               (reset! animals-state (set data))))
       (fn
         []
         [:div
-         #_[:p (pr-str @form-input-state)]
          [:table.table.table-striped
           [:thead
            [:tr
