@@ -29,100 +29,41 @@ Michiel Borkent
 * Datomic
 
 ---
-# REPL
-- Interactieve manier van ontwikkelen
-- REPL: Read Eval Print Loop
+# Clojure crash course
 
+# REPL
+- Interactive development: Read Eval Print Loop
 
 		!clojure
 		user=>                         <- prompt
----
 
-# REPL
-- Interactieve manier van ontwikkelen
-- REPL: Read Eval Print Loop
-
-		!clojure
-		user=> (inc 1)                 <- expressie
-		2                              <- resultaat
+- Start one by `lein repl`
+  or in IntelliJ
 
 ---
+# Clojure crash course
 
-# REPL
-- Interactieve manier van ontwikkelen
-- REPL: Read Eval Print Loop
+In the REPL I will cover the following basics:
 
-		!clojure
-		user=> (println "hello world") <- expressie
-		hello world                    <- side effect
-		nil                            <- resultaat
----
+* Clojure basics and special forms
+    - if
+    - let
+    - function call
+    - function definition
 
-# Ontwikkelomgevingen
-- Voor Eclipse-gebruikers: CounterClockwise plugin: <https://code.google.com/p/counterclockwise/>
-- CCW is verreweg de beste en meest actief ontwikkelde plugin vergeleken met andere IDES+plugins
-- Mocht je een extra uitdaging willen: Emacs + nrepl.el
-- Recent ook voor Intellij: cursive clojure plugin
 
 ---
+# Clojure crash course
 
-# CounterClockwise
-- Biedt per Clojure-project een REPL in Eclipse
-- Biedt Leiningen ondersteuning
-- Leiningen is Maven met een Clojure-schil eromheen (+ veel meer)
-- Nieuw Clojure project
-
----
-
-# CounterClockwise
-- Inhoud `project.clj`, vergelijkbaar met `pom.xml` van Maven, maar
-  dan Clojure-notatie ipv XML
-- Clojure is zelf gewoon een dependency.
-- Versie is dus per project
-  makkelijk in te stellen.
-
-
-
-		!clojure
-		(defproject gastcollege "0.1.0-SNAPSHOT"
-  			:description "FIXME: write description"
-  			:url "http://example.com/FIXME"
-  			:license {:name "Eclipse Public License"
-           	          :url "http://www.eclipse.org/legal/epl-v10.html"}
-  			:dependencies [[org.clojure/clojure "1.5.1"]])
----
-
-# REPL starten voor project
-Run as Clojure application
-
-![eclipse repl](img/eclipse-repl.png)
-
----
-
-# Functieaanroep
-
-    !clojure
-    (inc 1)
-
-
-in plaats van:
-
-    !javascript
-    inc(1)
-
-
-Dit noem je ook wel prefix-notatie.
-
----
-
-# If-expressie
+# If
 
     !clojure
     (if (< (rand-int 10) 5)
-      "Getal kleiner dan 5"
-      "Getal groter dan of gelijk aan 5")
+      "Smaller than 5"
+      "Greater or equal than 5")
 
 ---
+# Clojure crash course
 
 # Let
     !clojure
@@ -132,74 +73,64 @@ Dit noem je ook wel prefix-notatie.
       z) ;;=> 21
 
 ---
+# Clojure crash course
 
-# Terug naar wat is FP?
-Imperatief programmeren
-=
-Place oriented programming
-
-![imperatief](img/imperative-flow.png)
-
----
-
-# Terug naar wat is FP?
-Functioneel programmeren
-=
-Value oriented programming
-
-![functional](img/functional-flow.png)
-
----
-# Pure functies
-Conceptueel zoals wiskundige functie:
-
-- gegarandeerd dezelfde output bij dezelfde input
-- een functie-aanroep kan dus altijd vervangen worden door zijn uitkomst
-- geen (serieuze) side effects (IO, mutatie van objecten, etc)
-
----
-# Pure functies
-De meeste functies in Clojure zijn puur.
+# Function call
 
     !clojure
-    (inc 10) ;;=> 11
-    (inc 11) ;;=> 12
-    (count "foo") ;;=> 3
-    (count "dude") ;;=> 4
-    (str "foo" "bar") ;;=> "foobar"
+    (inc 1) ;;=> 2
+
+instead of
+
+    !javascript
+    inc(1) // 2
+
+It is called prefix notation
 
 ---
-# Pure functies
-Niet-pure functies zijn echter gewoon
-mogelijk (i.t.t. Haskell)
+# Clojure crash course
+
+# Function definition
+    !clojure
+    (def my-fun (fn [x]
+                  (+ x 2)))
+
+    ;; same as:
+    (defn my-fun [x]
+      (+ x 2))
+
+---
+# Clojure crash course
+
+Literals, symbols and keywords
 
     !clojure
-    (rand-int 10) ;;=> 7
-    (rand-int 10) ;;=> 0
-    (time (inc 1)) ;;=>
-    "Elapsed time: 0.022 msecs" <- side effect
-    2                           <- resultaat
-    user=> (time (inc 1))
-    "Elapsed time: 0.024 msecs" <- side effect
-    2                           <- resultaat
-
-- Waarom zijn `rand-int` en `time` niet puur?
-- NB: `time` is een speciaal soort functie, nl. een macro
+    1     ;; integer literal
+    "foo" ;; string literal
+    'foo  ;; quoted symbol
+    foo   ;; symbol (will evaluate to value bound to foo)
+    :foo  ;; keyword, more or less a constant, often used as key in hashmap
+    {:a 1, :b 2} ;; map literal
 
 ---
+# Clojure crash course
 
-# Pure functies
-- Makkelijker testbaar
-- Geen afhankelijkheid van globale state (bv attributen van een klasse
-  of object)
-- Dus makkelijker lokaal uit te proberen (REPL) en over te redeneren
-- Veel aanroepen van pure functies zijn makkelijker te parallelliseren, omdat ze onafhankelijk van elkaar kunnen draaien
-- Compiler kan optimaliseren (Haskell, C, …)
-- Clojure gebruikt puurheid van functies in combinatie met
-  concurrency-mechanismen (atoms, refs, ...)
+;; TODO
+
+* Clojure collections
+    - vectors
+    - maps
+    - lists
+    - sets
+
+* Functions on data structures
 
 ---
-# Voorbeeld atom + pure functies
+# Mutable state
+
+Atoms are mutable references to immutable values
+
+Pure functions are used to transform immutable value
 
     !clojure
     (def game-state (atom {:score 0}))
@@ -221,6 +152,14 @@ mogelijk (i.t.t. Haskell)
 
 
 ---
+
+
+---
+# Clojure crash course
+
+Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
+
+
 # Voorbeeld parallellisatie
     !clojure
     (defn reverse-str [s]
