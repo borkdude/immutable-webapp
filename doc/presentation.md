@@ -115,8 +115,6 @@ Literals, symbols and keywords
 ---
 # Clojure crash course
 
-;; TODO
-
 * Clojure collections
     - vectors
     - maps
@@ -126,11 +124,82 @@ Literals, symbols and keywords
 * Functions on data structures
 
 ---
+# Clojure crash course
+
+Vectors
+
+    !clojure
+    (def v1 (vector 1 2 3 4))
+    (def v2 [1 2 3 4])
+    (= v1 v2) ;; true
+    (get v1 0) ;; 1
+    (get v1 3) ;; 4
+    (get v1 4) ;; nil
+    (v1 0) ;; 1
+    (v1 3) ;; 4
+    (conj v1 5) ;; [1 2 3 4 5]
+
+---
+# Clojure crash course
+
+Maps
+
+    !clojure
+    (def m1 {:a 1 :b 2})
+    (get m1 :a) ;; 1
+    (get m1 :b) ;; 2
+    (m1 :a) ;; 1
+    (:a m1) ;; 1
+    (:c m1) ;; nil
+    (assoc m1 :c 3) ;; {:c 3, :b 2, :a 1}
+
+---
+# Clojure crash course
+
+Lists.
+Used mostly for representing code (for example in macros).
+
+    !clojure
+    (def expr (list 'println 1 2 3)) ;; (println 1 2 3), unevaluated
+    (eval expr) ;; (1 2 3), normally we don't do this
+    (conj (list 1 2 3) 4) ;; (4 1 2 3)
+
+---
+# Clojure crash course
+
+Sets
+
+    !clojure
+    (def s1 #{1 2 3})
+    (contains? s1 1) ;;=> true
+    (contains? s1 4) ;;=> false
+    (conj s1 4) ;;=> #{1 2 3 4}
+    (disj s1 3) ;;=> #{1 2}
+
+
+---
+# Sequence abstraction
+
+Clojure collections implement a sequence interface, so you can apply general sequences functions.
+
+Examples: `first`, `rest`, `map`, `filter`, `remove`.
+
+    !clojure
+    (def v1 [1 2 3 4])
+    (first v1) ;; 1
+    (rest v1) ;; (2 3 4)
+    (map v1 inc) ;; (2 3 4 5)
+    (filter v1 odd?) ;; (1 3)
+    (remove v1 odd?) ;; (2 4)
+
+---
 # Mutable state
 
-Atoms are mutable references to immutable values
+Atoms are mutable references to immutable values.
 
-Pure functions are used to transform immutable value
+One of 4 kinds of mutable references in Clojure.
+
+Pure functions are used to atomically transform immutable value stored in reference.
 
     !clojure
     (def game-state (atom {:score 0}))
@@ -150,90 +219,13 @@ Pure functions are used to transform immutable value
     (score!)
     @game-state ;;=> {:score 40}
 
-
----
-
-
 ---
 # Clojure crash course
 
 Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
 
 
-# Voorbeeld parallellisatie
-    !clojure
-    (defn reverse-str [s]
-      (apply str
-             (reverse s)))
-
-    (reverse-str "foo") ;;=> "oof"
-
-
-Sequentieel
-
-    !clojure
-    (map reverse-str ["foo" "bar" "baz"])
-    ;;=> ("oof" "rab" "zab")
-
-
-Parallel (1 letter verschil)
-
-    !clojure
-    (pmap reverse-str ["foo" "bar" "baz"])
-    ;;=> ("oof" "rab" "zab")
-
-
 ---
-# Hogere orde functie
-1. Functie die een of meer functies als invoer heeft
-2. Of: functie die een andere functie oplevert (komen we vandaag niet
-   aan toe)
-
----
-# Hogere orde functie: map
-    !clojure
-    (map inc [1 2 3]) ;;=> (2 3 4)
-
-
-- Invoer-functie is hier `inc`
-- Past invoerfunctie toe op elk element in een collectie.
-- Levert een nieuwe collectie op.
-
----
-# Hogere orde functie: filter
-    !clojure
-    (odd? 1) ;;=> true
-    (odd? 2) ;;=> false
-    (range 10) ;;=> (0 1 2 3 4 5 6 7 8 9)
-    (filter odd? (range 10)) ;;=> (1 3 5 7 9)
-
-
-- Invoer-functie is hier `odd?`
-- filtert de elementen uit een collectie waarvoor functie 'logisch
-  waar' oplevert
-  (In Clojure is alles behalve `nil` en `false` logisch waar)
-
----
-# Hogere orde functie: reduce
-    !clojure
-    (reduce + [1 2 3 4 5]) ;;=> 15
-
-
-Stappen:
-
-    !clojure
-    (reduce + [1 2 3 4 5])
-    (+ 1 2) ;;=> 3
-    (reduce + [3 3 4 5])
-    (+ 3 3 ) ;;=> 6
-    (reduce + [6 4 5])
-    (+ 6 4) ;;=> 10
-    (reduce + [10 5])
-    (+ 10 5) ;;=> 15
-    15
-
----
-
 # Datalog in 6 minutes
 
 ---
@@ -249,9 +241,9 @@ Clojure
 	      input1
 	      ...
 	      inputN))
-	
+
 .notes: :where - constraints, :in - inputs, :find - variables to return
-	
+
 ---
 
 # Variables and Constants
@@ -262,7 +254,7 @@ Variables
 * ?product
 * ?orderId
 * ?email
-	
+
 Constants
 
 * 42
@@ -294,7 +286,7 @@ Constrain the results returned, binds variables
 	!clojure
 	[42 :email ?email]
 -> jdoe@example.com
-	
+
 ---
 
 # Data Pattern: E-A-V
@@ -321,7 +313,7 @@ What attributes and values does customer 42 have?
 	[42 ?attribute ?value]
 -> :email - jdoe@example.com, :orders - 107, 141
 
---- 
+---
 
 # Where Clause
 
@@ -330,7 +322,7 @@ Where to put the data pattern?
 	!clojure
 	[:find ?customer
 	 :where [?customer :email]]
-	
+
 Implicit Join
 
 	!clojure
@@ -345,13 +337,13 @@ Implicit Join
 	!clojure
 	(q '[:find ?customer :in $ :where [?customer :id] [?customer :orders]]
        db)
-	
+
 Find using $database and ?email:
 
 	!clojure
 	(q '[:find ?customer :in $ ?email :where [?customer :email ?email]]
 	    db "jdoe@example.com")
-	
+
 ---
 
 # Predicates
@@ -360,14 +352,14 @@ Functional constraints that can appear in a :where clause
 
 	!clojure
 	[(< 50.0 ?price)]
-	
+
 Find the expensive items
 
 	!clojure
 	[:find ?item
 	 :where [?item :item/price ?price]
 	        [(< 50.0 ?price)]]
-	
+
 ---
 
 # Aggregates
@@ -377,8 +369,8 @@ The syntax is incorporated in the :find clause:
     !clojure
     [:find ?a (min ?b) (max ?b) ?c (sample 12 ?d) :where ...]
 
-The list expressions are aggregate expressions. 
-Query variables not in aggregate expressions will group the results and appear intact in the result. 
+The list expressions are aggregate expressions.
+Query variables not in aggregate expressions will group the results and appear intact in the result.
 
 The included aggregation functions are:
 
@@ -387,14 +379,14 @@ The included aggregation functions are:
 * sum, avg, median
 * variance, stddev
 * rand
-	
+
 ---
 
 # Functions
 
 	!clojure
 	[(shipping ?zip ?weight) ?cost]
-	
+
 Call functions by binding inputs:
 
 	!clojure
@@ -405,5 +397,5 @@ Call functions by binding inputs:
 	        [?product :product/price ?price]
 	        [(Shipping/estimate ?zip ?weight) ?shipCost]
 	        [(<= ?price ?shipCost)]]
-	
+
 Or: find me the customer/product combinations where the shipping cost dominates the product cost.
