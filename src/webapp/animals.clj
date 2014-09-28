@@ -2,8 +2,10 @@
   (:require [webapp.db :as db]))
 
 (defn create!
-  [m]
-  (db/create! (assoc m :type :animal)))
+  ([]
+     (db/create! {:type :animal}))
+  ([m]
+     (db/create! (assoc m :type :animal))))
 
 (defn read
   ([]

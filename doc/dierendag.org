@@ -18,6 +18,7 @@
 ***** core.async
 ***** Transit (optioneel)
 ***** Sablono
+***** Secretary
 *** Clojure en ClojureScript - syntax (20)
 
 *** Web server technologies (10+20)

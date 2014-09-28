@@ -3,8 +3,10 @@
             [webapp.animals :as animals]))
 
 (defn create!
-  [m]
-  (db/create! (assoc m :type :book)))
+  ([]
+     (db/create! {:type :book}))
+  ([m]
+     (db/create! (assoc m :type :book))))
 
 (defn read
   ([]

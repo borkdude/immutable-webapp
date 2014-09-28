@@ -1,8 +1,8 @@
 (ns webapp.db)
 
-(def max-id (atom 0))
+(defonce max-id (atom 0))
 
-(def records (atom {}))
+(defonce records (atom {}))
 
 (defn next-id
   [] (swap! max-id inc))
