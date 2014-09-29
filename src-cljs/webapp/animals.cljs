@@ -112,7 +112,7 @@
       [:th ""]]]
     [:tbody
      (map (fn [a]
-            ^{:key (str "animal-row" (:id a))}
+            ^{:key (str "animal-row-" (:id a))}
             [animal-row a])
           (sort-by :name @animals-state))
      [animal-form]]]])

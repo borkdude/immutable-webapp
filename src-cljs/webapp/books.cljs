@@ -6,7 +6,7 @@
     [cljs-http.client :as http]
     [cljs.core.async :refer (<!)]))
 
-(defonce books-state (atom nil))
+(defonce books-state (atom []))
 
 (defn book [b]
       [:div.row
@@ -18,11 +18,16 @@
         [:p "Released: " (.toLocaleDateString (:released b))]
         [:p "Animal on cover: " (-> b :animal :name)]]])
 
+(go (let [response
+          (<! (http/get "/books"))
+          data (:body response)]
+      (reset! books-state (set data))))
+
 (defn books []
-      (go (let [response
-                (<! (http/get "/books"))
-                data (:body response)]
-               (reset! books-state data)))
-      (fn [] [:div.container
-              (map book @books-state)]))
+  [:div.container
+   (map (fn [b]
+          ^{:key (str "book-row-" (:id b))}
+          [book b])
+        (sort-by :title @books-state))])
+
 
