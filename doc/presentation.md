@@ -224,6 +224,10 @@ Pure functions are used to atomically transform immutable value stored in refere
 
 Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
 
+---
+# Liberator
+
+http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 ---
 # Datalog in 6 minutes
