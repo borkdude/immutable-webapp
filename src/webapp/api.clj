@@ -19,7 +19,7 @@
 (defroutes routes
   
   (ANY "/animals"
-       []
+       [name species]
        (resource
         :available-media-types ["application/edn" "application/json" "text/html"]
         :allowed-methods [:get :post]
@@ -29,21 +29,26 @@
                          "application/edn" found
                          "application/json" (json/generate-string found)
                          "text/html" (html/generate-string found))))
-        :post! (fn [ctx] {::id (animals/create!)})
+        :post! (fn [ctx] {::id (animals/create! {:name name :species species})})
         :post-redirect? (fn [ctx] {:location (str "/animals/" (::id ctx))})
         :handle-exception handle-exception))
 
   (ANY "/animals/:id"
-       {body :body {id :id} :params}
-       (resource
-        :available-media-types ["application/edn"]
-        :allowed-methods [:get :put :delete]
-        :handle-ok (fn [ctx] (animals/read (Integer/parseInt id)))
-        :put! (fn [ctx]
-                (animals/update! (Integer/parseInt id)
-                                 (clojure.edn/read-string (slurp body))))
-        :delete! (fn [ctx] (animals/delete! (Integer/parseInt id)))
-        :handle-exception handle-exception))
+       [id name species]
+       (let [id (Integer/parseInt id)]
+         (resource
+           :available-media-types ["application/edn"]
+           :allowed-methods [:get :put :delete]
+           :handle-ok (fn [ctx]
+                        (animals/read id))
+           :put! (fn [ctx]
+                   (animals/update!
+                     id
+                     {:name name :species species}))
+           :new? false
+           :respond-with-entity? true
+           :delete! (fn [ctx] (animals/delete! id))
+           :handle-exception handle-exception)))
 
   (ANY "/books"
        []

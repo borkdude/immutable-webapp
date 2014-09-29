@@ -14,25 +14,35 @@
           data (:body response)]
       (reset! animals-state (set data))))
 
-(defn gen-id []
-  (-> (js/Date.) .valueOf))
-
+;;; crud operations
 (defn add-animal! [a]
-  (swap! animals-state conj (assoc a :id (gen-id)
-                                     :type :animal)))
+  (go (let [response
+            (<! (http/post "/animals" {:edn-params
+                                        a}))]
+        (swap! animals-state conj (:body response)))))
 
 (defn remove-animal! [a]
-  (swap! animals-state disj a))
+  (go (let [response
+            (<! (http/delete (str "/animals/"
+                                  (:id a))))]
+        (if (= (:status response)
+                 200)
+          (swap! animals-state disj a)))))
 
 (defn update-animal! [a]
-  (swap! animals-state
-         (fn [old-state]
-           (conj
-             (set (filter (fn [other]
-                            (not= (:id other)
-                                  (:id a)))
-                          old-state))
-             a))))
+  (go (let [response
+            (<! (http/put (str "/animals/" (:id a))
+                          {:edn-params a}))
+            updated-animal (:body response)]
+        (swap! animals-state
+               (fn [old-state]
+                 (conj
+                   (set (filter (fn [other]
+                                  (not= (:id other)
+                                        (:id a)))
+                                old-state))
+                   updated-animal))))))
+;;; end crud operations
 
 (defn field-input-handler
   "Returns a handler that updates value in atom map,
