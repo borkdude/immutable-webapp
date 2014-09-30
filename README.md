@@ -19,7 +19,8 @@ Install [leiningen](http://leiningen.org) by following the instructions on this
 
 ### Install IntelliJ
 To edit Clojure code we will use IntelliJ and the Cursive plugin. If you like, you can skip
-this step and use your favorite editor with Clojure support.
+this step and use your favorite editor with Clojure support. Code changes are auto-compiled, 
+so you don't need IntelliJ for Clojure compilation.
 
 Download and install IntelliJ via [this link](http://www.jetbrains.com/idea/download/).
 The community edition of IntelliJ is free.
@@ -31,6 +32,7 @@ Open IntelliJ and open Preferences.
 Proceed with the instructions on [this page](https://cursiveclojure.com/userguide/)
 to install the Cursive plugin.
 You might need to restart IntelliJ after the plugin has been installed.
+To open a leiningen project, just open the `project.clj` file with IntelliJ.
 
 ### Download project and dependencies
 
