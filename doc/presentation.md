@@ -3,9 +3,13 @@
 # The Immutable Stack
 04-10-2014 (dierendag)
 
-Martin van Amersfoorth
+## Martin van Amersfoorth
 
-Michiel Borkent
+[@mamersfo](https://www.twitter.com/mamersfo)
+
+## Michiel Borkent
+
+[@borkdude](https://www.twitter.com/borkdude)
 
 ![finalist](img/logo.png)
 
@@ -384,6 +388,13 @@ When user clicks on button with text "Books" a screen will appear that lists all
 * release data
 * animal on cover
 
+The screen could look like the example in the next slide.
+
+---
+# Example book screen
+
+![this](img/bookscreen.png)
+
 
 ---
 # Database
@@ -417,7 +428,7 @@ Coordination Model
 
 ![EAVT](img/eavt.png)
 
-* Datomic: facts, EAVT, Datoms - combined with a declarative, relational query language to store and retrieve those facts (no SQL by the way) 
+* Datomic: facts, EAVT, Datoms - combined with a declarative, relational query language to store and retrieve those facts (no SQL by the way)
 
 ---
 
@@ -636,3 +647,7 @@ Or: find me the customer/product combinations where the shipping cost dominates 
 Fill in the datalog queries in `db.clj` and test the functions from the REPL.
 
 You'll get instructions how to execute functions from REPL.
+
+---
+
+# (thanks!)

@@ -41,7 +41,6 @@
 **** Oefening: queries met Datalog
 
 ** TODO
-*** MB: books pagina opfleuren
 *** MB: 3 Branches maken
 
 ** Klaarzetten voor tijdens presentatie:
