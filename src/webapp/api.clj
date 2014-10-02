@@ -50,14 +50,6 @@
            :delete! (fn [ctx] (animals/delete! id))
            :handle-exception handle-exception)))
 
-  (ANY "/books"
-       []
-       (resource
-        :available-media-types ["application/edn"]
-        :allowed-methods [:get]
-        :handle-ok (fn [ctx] (books/read))
-        :handle-exception handle-exception))
-  
   (ANY "/"
        []
        (redirect "/index.html"))
