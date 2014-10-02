@@ -4,7 +4,8 @@
     [reagent.core :as reagent :refer [atom]]
     [sablono.core :as html :refer-macros [html]]
     [cljs-http.client :as http]
-    [cljs.core.async :refer (<!)]))
+    [cljs.core.async :refer (<!)]
+    [clojure.string :as string]))
 
 (defonce books-state (atom []))
 
@@ -13,10 +14,13 @@
        [:div.col-sm-4
         [:img {:src (str "/img/" (:img b))}]]
        [:div.col-sm-8
-        [:p "Title: " (:title b)]
-        [:p "Authors: " (pr-str (:authors b))]
-        [:p "Released: " (.toLocaleDateString (:released b))]
-        [:p "Animal on cover: " (-> b :animal :name)]]])
+        [:div.panel.panel-default
+         [:div.panel-heading
+          [:h3.panel-title (:title b)]]
+         [:div.panel-body
+          [:p "Authors: " (string/join ", " (:authors b))]
+          [:p "Released: " (.toLocaleDateString (:released b))]
+          [:p "Animal on cover: " (-> b :animal :name)]]]]])
 
 (go (let [response
           (<! (http/get "/books"))
