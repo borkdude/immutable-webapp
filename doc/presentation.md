@@ -25,14 +25,19 @@
 ---
 # Intro
 
-* Clojure
-* Clojurescript
-* Web techologies
-** Ring, Compojure, Liberator
-** React
-* Datomic
+# Clojure(Script)
+# Immutable Stack
 
----
+* Datomic
+* Ring
+* Compojure
+* Liberator
+* ReactJS: Om or Reagent
+
++
+
+* many more
+
 # Examples
 
 * Matchmaker
