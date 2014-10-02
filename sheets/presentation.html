@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Immutable Stack</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="theme/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="theme/css/screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="theme/js/slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Immutable Stack</h1></header>
+            
+            
+            <section><p>04-10-2014 (dierendag)</p>
+<h2>Martin van Amersfoorth</h2>
+<p><a href="https://www.twitter.com/mamersfo">@mamersfo</a></p>
+<h2>Michiel Borkent</h2>
+<p><a href="https://www.twitter.com/borkdude">@borkdude</a></p>
+<p><img alt="finalist" src="img/logo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Schedule</h1></header>
+            
+            
+            <section><ul>
+<li>Intro (10 m.)</li>
+<li>Clojure crash course (20 m.)</li>
+<li>REST API (10+20 m.)</li>
+<li>User interface (10+20 m.)</li>
+<li>Database (10+20 m.)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Intro</h1></header>
+            
+            
+            <section><ul>
+<li>Clojure</li>
+<li>Clojurescript</li>
+<li>Web techologies
+<strong> Ring, Compojure, Liberator
+</strong> React</li>
+<li>Datomic</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Examples</h1></header>
+            
+            
+            <section><ul>
+<li>Matchmaker</li>
+<li>Lipton</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><h1>REPL</h1>
+<ul>
+<li>
+<p>Interactive development: Read Eval Print Loop</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="nv">user=&gt;</span>                         <span class="nv">&lt;-</span> <span class="nv">prompt</span>
+</pre></div>
+
+</li>
+<li>
+<p>Start one by <code>lein repl</code>
+  or in IntelliJ</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>In the REPL I will cover the following basics:</p>
+<ul>
+<li>Clojure basics and special forms<ul>
+<li>if</li>
+<li>let</li>
+<li>function call</li>
+<li>function definition</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><h1>If</h1>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nb">rand-int </span><span class="mi">10</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span>
+<span class="lineno">2</span>   <span class="s">&quot;Smaller than 5&quot;</span>
+<span class="lineno">3</span>   <span class="s">&quot;Greater or equal than 5&quot;</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><h1>Let</h1>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">x</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+<span class="lineno">2</span>       <span class="nv">y</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">)</span>
+<span class="lineno">3</span>       <span class="nv">z</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)]</span>
+<span class="lineno">4</span>   <span class="nv">z</span><span class="p">)</span> <span class="c1">;;=&gt; 21</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><h1>Function call</h1>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">1</span><span class="p">)</span> <span class="c1">;;=&gt; 2</span>
+</pre></div>
+
+<p>instead of</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="nx">inc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// 2</span>
+</pre></div>
+
+<p>It is called prefix notation</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><h1>Function definition</h1>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">my-fun</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span>
+<span class="lineno">2</span>               <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="lineno">3</span> 
+<span class="lineno">4</span> <span class="c1">;; same as:</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">my-fun</span> <span class="p">[</span><span class="nv">x</span><span class="p">]</span>
+<span class="lineno">6</span>   <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Literals, symbols and keywords</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="mi">1</span>     <span class="c1">;; integer literal</span>
+<span class="lineno">2</span> <span class="s">&quot;foo&quot;</span> <span class="c1">;; string literal</span>
+<span class="lineno">3</span> <span class="ss">&#39;foo</span>  <span class="c1">;; quoted symbol</span>
+<span class="lineno">4</span> <span class="nv">foo</span>   <span class="c1">;; symbol (will evaluate to value bound to foo)</span>
+<span class="lineno">5</span> <span class="ss">:foo</span>  <span class="c1">;; keyword, more or less a constant, often used as key in hashmap</span>
+<span class="lineno">6</span> <span class="p">{</span><span class="ss">:a</span> <span class="mi">1</span>, <span class="ss">:b</span> <span class="mi">2</span><span class="p">}</span> <span class="c1">;; map literal</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><ul>
+<li>
+<p>Clojure collections</p>
+<ul>
+<li>vectors</li>
+<li>maps</li>
+<li>lists</li>
+<li>sets</li>
+</ul>
+</li>
+<li>
+<p>Functions on data structures</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Vectors</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">v1</span> <span class="p">(</span><span class="nb">vector </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="k">def </span><span class="nv">v2</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">= </span><span class="nv">v1</span> <span class="nv">v2</span><span class="p">)</span> <span class="c1">;; true</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">get </span><span class="nv">v1</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">get </span><span class="nv">v1</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">;; 4</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nb">get </span><span class="nv">v1</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;; nil</span>
+<span class="lineno">7</span> <span class="p">(</span><span class="nf">v1</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">8</span> <span class="p">(</span><span class="nf">v1</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">;; 4</span>
+<span class="lineno">9</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">v1</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">;; [1 2 3 4 5]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Maps</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">m1</span> <span class="p">{</span><span class="ss">:a</span> <span class="mi">1</span> <span class="ss">:b</span> <span class="mi">2</span><span class="p">})</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">get </span><span class="nv">m1</span> <span class="ss">:a</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">get </span><span class="nv">m1</span> <span class="ss">:b</span><span class="p">)</span> <span class="c1">;; 2</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nf">m1</span> <span class="ss">:a</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="ss">:a</span> <span class="nv">m1</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="ss">:c</span> <span class="nv">m1</span><span class="p">)</span> <span class="c1">;; nil</span>
+<span class="lineno">7</span> <span class="p">(</span><span class="nb">assoc </span><span class="nv">m1</span> <span class="ss">:c</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">;; {:c 3, :b 2, :a 1}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Lists.
+Used mostly for representing code (for example in macros).</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">expr</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;println</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span> <span class="c1">;; (println 1 2 3), unevaluated</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">eval </span><span class="nv">expr</span><span class="p">)</span> <span class="c1">;; (1 2 3), normally we don&#39;t do this</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">conj </span><span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;; (4 1 2 3)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Sets</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">s1</span> <span class="o">#</span><span class="p">{</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">})</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">contains? </span><span class="nv">s1</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;;=&gt; true</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">contains? </span><span class="nv">s1</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;;=&gt; false</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">s1</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;;=&gt; #{1 2 3 4}</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">disj </span><span class="nv">s1</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">;;=&gt; #{1 2}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Sequence abstraction</h1></header>
+            
+            
+            <section><p>Clojure collections implement a sequence interface, so you can apply general sequences functions.</p>
+<p>Examples: <code>first</code>, <code>rest</code>, <code>map</code>, <code>filter</code>, <code>remove</code>.</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">v1</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
+<span class="lineno">2</span> <span class="p">(</span><span class="nb">first </span><span class="nv">v1</span><span class="p">)</span> <span class="c1">;; 1</span>
+<span class="lineno">3</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">v1</span><span class="p">)</span> <span class="c1">;; (2 3 4)</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">map </span><span class="nv">v1</span> <span class="nv">inc</span><span class="p">)</span> <span class="c1">;; (2 3 4 5)</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">v1</span> <span class="nv">odd?</span><span class="p">)</span> <span class="c1">;; (1 3)</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nb">remove </span><span class="nv">v1</span> <span class="nv">odd?</span><span class="p">)</span> <span class="c1">;; (2 4)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Mutable state</h1></header>
+            
+            
+            <section><p>Atoms are mutable references to immutable values.</p>
+<p>One of 4 kinds of mutable references in Clojure.</p>
+<p>Pure functions are used to atomically transform immutable value stored in reference.</p>
+<div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="k">def </span><span class="nv">game-state</span> <span class="p">(</span><span class="nf">atom</span> <span class="p">{</span><span class="ss">:score</span> <span class="mi">0</span><span class="p">}))</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">increase-score</span> <span class="p">[</span><span class="nv">old-state</span> <span class="nv">points</span><span class="p">]</span>
+<span class="lineno"> 4</span> <span class="p">(</span><span class="nf">update-in</span> <span class="nv">old-state</span> <span class="p">[</span><span class="ss">:score</span><span class="p">]</span> <span class="nb">+ </span><span class="nv">points</span><span class="p">))</span>
+<span class="lineno"> 5</span> 
+<span class="lineno"> 6</span> <span class="c1">;; test:</span>
+<span class="lineno"> 7</span> <span class="p">(</span><span class="nf">increase-score</span> <span class="p">{</span><span class="ss">:score</span> <span class="mi">40</span><span class="p">}</span> <span class="mi">20</span><span class="p">)</span> <span class="c1">;;=&gt; {:score 60}</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">score!</span> <span class="p">[]</span>
+<span class="lineno">10</span>   <span class="p">(</span><span class="nf">swap!</span> <span class="nv">game-state</span> <span class="nv">increase-score</span> <span class="mi">20</span><span class="p">))</span>
+<span class="lineno">11</span> 
+<span class="lineno">12</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 0}</span>
+<span class="lineno">13</span> <span class="p">(</span><span class="nf">score!</span><span class="p">)</span>
+<span class="lineno">14</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 20}</span>
+<span class="lineno">15</span> <span class="p">(</span><span class="nf">score!</span><span class="p">)</span>
+<span class="lineno">16</span> <span class="o">@</span><span class="nv">game-state</span> <span class="c1">;;=&gt; {:score 40}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Clojure crash course</h1></header>
+            
+            
+            <section><p>Use the <a href="http://clojure.org/cheatsheet">Clojure cheat sheet</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>REST API</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>REST API</h1></header>
+            
+            
+            <section><ul>
+<li>Ring: HTTP abstraction</li>
+<li>Compojure: routing</li>
+<li>Liberator: expose data as resources</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Ring</h1></header>
+            
+            
+            <section><ul>
+<li>HTTP abstraction library</li>
+<li>Inspired by WSGI (Python) and Rack (Ruby)</li>
+<li>Represents requests and responses as maps</li>
+<li><a href="https://github.com/ring-clojure/ring/blob/master/SPEC">SPEC</a></li>
+<li>Middleware</li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">handler</span> <span class="p">[</span><span class="nv">req</span><span class="p">]</span>
+<span class="lineno">2</span>   <span class="p">{</span><span class="ss">:status</span> <span class="mi">200</span>
+<span class="lineno">3</span>    <span class="ss">:body</span> <span class="s">&quot;{:a 1, :b 2}&quot;</span>
+<span class="lineno">4</span>    <span class="ss">:headers</span> <span class="p">{</span><span class="s">&quot;Content-Type&quot;</span> <span class="s">&quot;application/edn&quot;</span><span class="p">})</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">(</span><span class="kd">defn </span><span class="nv">run-server</span> <span class="p">[]</span>
+<span class="lineno">7</span>   <span class="p">(</span><span class="nf">run-jetty</span> <span class="o">#</span><span class="ss">&#39;handler</span> <span class="p">{</span><span class="ss">:port</span> <span class="mi">8080</span><span class="p">}))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Compojure</h1></header>
+            
+            
+            <section><ul>
+<li>Routing library for Ring</li>
+<li><a href="https://github.com/weavejester/compojure/wiki/Destructuring-Syntax">Specific destructuring</a></li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre><span class="lineno"> 1</span> <span class="p">(</span><span class="nf">defroutes</span> <span class="nv">main-routes</span>
+<span class="lineno"> 2</span>   <span class="p">(</span><span class="nf">GET</span> <span class="s">&quot;/&quot;</span> <span class="p">[]</span> <span class="p">(</span><span class="nf">index-page</span><span class="p">))</span>
+<span class="lineno"> 3</span>   <span class="p">(</span><span class="nf">GET</span> <span class="s">&quot;/animals/:id&quot;</span> <span class="p">[</span><span class="nv">id</span><span class="p">]</span>
+<span class="lineno"> 4</span>     <span class="p">(</span><span class="nf">find-animal</span> <span class="nv">id</span><span class="p">))</span>
+<span class="lineno"> 5</span>   <span class="p">(</span><span class="nf">route/resources</span> <span class="s">&quot;/&quot;</span><span class="p">)</span>
+<span class="lineno"> 6</span>   <span class="p">(</span><span class="nf">route/not-found</span> <span class="s">&quot;Page not found&quot;</span><span class="p">))</span>
+<span class="lineno"> 7</span> 
+<span class="lineno"> 8</span> <span class="p">(</span><span class="k">def </span><span class="nv">app</span>
+<span class="lineno"> 9</span>   <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">handler/site</span> <span class="nv">main-routes</span><span class="p">)</span>
+<span class="lineno">10</span>     <span class="p">(</span><span class="nf">wrap-base-url</span><span class="p">)))</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Liberator</h1></header>
+            
+            
+            <section><ul>
+<li>Library for exposing data as resources</li>
+<li>Compliant with relevant requirements of HTTP specification RFC-2616</li>
+<li>Inspired by Erlang Webmachine</li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">defresource</span> <span class="nv">hello-world</span>
+<span class="lineno">2</span>   <span class="ss">:available-media-types</span> <span class="p">[</span><span class="s">&quot;text/plain&quot;</span><span class="p">]</span>
+<span class="lineno">3</span>   <span class="ss">:handle-ok</span> <span class="s">&quot;Hello, world!&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p><a href="http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg">Decision tree</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Putting it all together</h1></header>
+            
+            
+            <section><p>Code example from <code>api.clj</code></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Assignment</h1></header>
+            
+            
+            <section><p><code>$ git checkout rest-api</code></p>
+<p>Add endpoints / liberator resources to <code>api.clj</code></p>
+<ul>
+<li>GET<ul>
+<li>all books</li>
+<li>one specific book</li>
+</ul>
+</li>
+<li>POST<ul>
+<li>a new book</li>
+</ul>
+</li>
+<li>DELETE<ul>
+<li>a book</li>
+</ul>
+</li>
+<li>PUT<ul>
+<li>to change book details</li>
+</ul>
+</li>
+</ul>
+<p>Test it with curl, browser or other REST client</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>User interface</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>User interface</h1></header>
+            
+            
+            <section><ul>
+<li>Clojurescript<ul>
+<li>Clojure compiled to javascript</li>
+</ul>
+</li>
+<li>
+<p>React</p>
+<ul>
+<li>V of MVC</li>
+<li>Component based</li>
+<li>Components can have props and inner state</li>
+<li>Virtual DOM</li>
+</ul>
+</li>
+<li>
+<p>ClojureScript abstractions</p>
+<ul>
+<li>Om</li>
+<li>Reagent</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>ClojureScript abstractions</h1></header>
+            
+            
+            <section><h2>Om</h2>
+<ul>
+<li>Opiniated library by David Nolen</li>
+<li>App-state based on one atom</li>
+<li>Cursor based access (kind of a functional lens / zipper)</li>
+<li>Components can access shared state, app state or local state</li>
+<li>Communication between components via app-state, handlers or core.async</li>
+<li>Explicit hooks React lifecycle</li>
+<li>Follows React semantics closely (e.g. local state changes cause re-rendering)</li>
+</ul>
+<p>See <a href="https://github.com/swannodette/om/tree/master/examples">examples</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>ClojureScript abstractions</h1></header>
+            
+            
+            <section><h2>Reagent</h2>
+<ul>
+<li>Minimalistic ClojureScript interface to React</li>
+<li>State is saved in RAtom, like clojure.core/atom, but keeps track of derefs</li>
+<li>Components can deref RAtom and will be re-rendered when RAtom changes</li>
+<li>Less verbose than Om</li>
+<li>You can hook to React lifecycle, but often don't need to</li>
+</ul>
+<p>See <a href="http://holmsand.github.io/reagent/">examples</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Assignment</h1></header>
+            
+            
+            <section><p><code>$ git checkout user-interface</code></p>
+<p>Implement the following user story.</p>
+<p>When user clicks on button with text "Books" a screen will appear that lists all books with:</p>
+<ul>
+<li>cover</li>
+<li>title</li>
+<li>authors</li>
+<li>release data</li>
+<li>animal on cover</li>
+</ul>
+<p>The screen could look like the example in the next slide.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Example book screen</h1></header>
+            
+            
+            <section><p><img alt="this" src="img/bookscreen.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Database</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic: deconstructing the database</h1></header>
+            
+            
+            <section><h2>relations | objects =&gt; facts</h2>
+<p>Information Model</p>
+<h2>place | time =&gt; values</h2>
+<p>State Model</p>
+<h2>client | server =&gt; peers</h2>
+<p>Distribution Model</p>
+<h2>reads | writes =&gt; reaction</h2>
+<p>Coordination Model</p>
+<p><img alt="Datomic" src="img/datomic-icon.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Information Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: relations vs. objects, impedance mismatch</li>
+</ul>
+<p><img alt="EAVT" src="img/eavt.png" /></p>
+<ul>
+<li>Datomic: facts, EAVT, Datoms - combined with a declarative, relational query language to store and retrieve those facts (no SQL by the way)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>State Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: update in place, contention, "the basis problem"</li>
+</ul>
+<p><img alt="Treerings" src="img/tree_rings.gif" /></p>
+<ul>
+<li>Datomic: Accretion of immutable facts, the database as an expanding value, otherwise: <a href="http://blog.datomic.com/2013/05/excision.html">excision</a></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Distribution Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: Client-server, partitions between service providers and service requesters</li>
+</ul>
+<p><img alt="Peers" src="img/peers.png" /></p>
+<ul>
+<li>Datomic: Peers and Storage, and Transactors too, empower applications by coordinating change and storage</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Coordination Model</h1></header>
+            
+            
+            <section><h1>Deconstructing the Coordination Model</h1>
+<ul>
+<li>Traditional: heavy coordination for reads and writes, need to poll for novelty</li>
+</ul>
+<p><img alt="Perception" src="img/eyeman.gif" /></p>
+<ul>
+<li>Datomic: splits "perception" (reads) and "process" (writes), reactive - not polling</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datalog in 6 minutes</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code has_notes">
+          <div class="inner">
+            
+            <header><h1>Query Anatomy</h1></header>
+            
+            
+            <section><p>Clojure</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">q</span> <span class="p">(</span><span class="o">&#39;</span><span class="p">[</span><span class="ss">:find</span> <span class="nv">...</span>
+<span class="lineno">2</span>       <span class="ss">:in</span> <span class="nv">...</span>
+<span class="lineno">3</span>       <span class="ss">:where</span> <span class="nv">...</span><span class="p">]</span>
+<span class="lineno">4</span>       <span class="nv">input1</span>
+<span class="lineno">5</span>       <span class="nv">...</span>
+<span class="lineno">6</span>       <span class="nv">inputN</span><span class="p">))</span>
+</pre></div>
+
+<p class="notes">:where - constraints, :in - inputs, :find - variables to return</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Variables and Constants</h1></header>
+            
+            
+            <section><p>Variables</p>
+<ul>
+<li>?customer</li>
+<li>?product</li>
+<li>?orderId</li>
+<li>?email</li>
+</ul>
+<p>Constants</p>
+<ul>
+<li>42</li>
+<li>:email</li>
+<li>"john"</li>
+<li>:order/id</li>
+<li>#instant "2012-02-29"</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Data Pattern: E-A-V</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> -------------------------------------------
+<span class="lineno">2</span> | entity | attribute | value              |
+<span class="lineno">3</span> -------------------------------------------
+<span class="lineno">4</span> | 42     | :email     | jdoe@example.com  |
+<span class="lineno">5</span> | 43     | :email     | jane@example.com  |
+<span class="lineno">6</span> | 42     | :orders    | 107               |
+<span class="lineno">7</span> | 42     | :orders    | 141               |
+<span class="lineno">8</span> -------------------------------------------
+</pre></div>
+
+<p>Constrain the results returned, binds variables</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span> <span class="nv">?email</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; jdoe@example.com, jane@example.com</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="ss">:email</span> <span class="nv">?email</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; jdoe@example.com</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Data Pattern: E-A-V</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> -------------------------------------------
+<span class="lineno">2</span> | entity | attribute | value              |
+<span class="lineno">3</span> -------------------------------------------
+<span class="lineno">4</span> | 42     | :email     | jdoe@example.com  |
+<span class="lineno">5</span> | 43     | :email     | jane@example.com  |
+<span class="lineno">6</span> | 42     | :orders    | 107               |
+<span class="lineno">7</span> | 42     | :orders    | 141               |
+<span class="lineno">8</span> -------------------------------------------
+</pre></div>
+
+<p>What attributes does customer 42 have?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="nv">?attribute</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; :email, :orders</p>
+<p>What attributes and values does customer 42 have?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="nv">?attribute</span> <span class="nv">?value</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; :email - jdoe@example.com, :orders - 107, 141</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Where Clause</h1></header>
+            
+            
+            <section><p>Where to put the data pattern?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span><span class="p">]]</span>
+</pre></div>
+
+<p>Implicit Join</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:orders</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Input(s)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">q</span> <span class="o">&#39;</span><span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:id</span><span class="p">]</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:orders</span><span class="p">]]</span>
+<span class="lineno">2</span>    <span class="nv">db</span><span class="p">)</span>
+</pre></div>
+
+<p>Find using $database and ?email:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">q</span> <span class="o">&#39;</span><span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="nv">?email</span> <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span> <span class="nv">?email</span><span class="p">]]</span>
+<span class="lineno">2</span>     <span class="nv">db</span> <span class="s">&quot;jdoe@example.com&quot;</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Predicates</h1></header>
+            
+            
+            <section><p>Functional constraints that can appear in a :where clause</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[(</span><span class="nb">&lt; </span><span class="mf">50.0</span> <span class="nv">?price</span><span class="p">)]</span>
+</pre></div>
+
+<p>Find the expensive items</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?item</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?item</span> <span class="ss">:item/price</span> <span class="nv">?price</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[(</span><span class="nb">&lt; </span><span class="mf">50.0</span> <span class="nv">?price</span><span class="p">)]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Aggregates</h1></header>
+            
+            
+            <section><p>The syntax is incorporated in the :find clause:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?a</span> <span class="p">(</span><span class="nb">min </span><span class="nv">?b</span><span class="p">)</span> <span class="p">(</span><span class="nb">max </span><span class="nv">?b</span><span class="p">)</span> <span class="nv">?c</span> <span class="p">(</span><span class="nf">sample</span> <span class="mi">12</span> <span class="nv">?d</span><span class="p">)</span> <span class="ss">:where</span> <span class="nv">...</span><span class="p">]</span>
+</pre></div>
+
+<p>The list expressions are aggregate expressions.
+Query variables not in aggregate expressions will group the results and appear intact in the result.</p>
+<p>The included aggregation functions are:</p>
+<ul>
+<li>min, max</li>
+<li>count, count-distinct</li>
+<li>sum, avg, median</li>
+<li>variance, stddev</li>
+<li>rand</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Functions</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">[(</span><span class="nf">shipping</span> <span class="nv">?zip</span> <span class="nv">?weight</span><span class="p">)</span> <span class="nv">?cost</span><span class="p">]</span>
+</pre></div>
+
+<p>Call functions by binding inputs:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span> <span class="nv">?product</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:shipAddress</span> <span class="nv">?address</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[</span><span class="nv">?address</span> <span class="ss">:zip</span> <span class="nv">?zip</span><span class="p">]</span>
+<span class="lineno">4</span>         <span class="p">[</span><span class="nv">?product</span> <span class="ss">:product/weight</span> <span class="nv">?weight</span><span class="p">]</span>
+<span class="lineno">5</span>         <span class="p">[</span><span class="nv">?product</span> <span class="ss">:product/price</span> <span class="nv">?price</span><span class="p">]</span>
+<span class="lineno">6</span>         <span class="p">[(</span><span class="nf">Shipping/estimate</span> <span class="nv">?zip</span> <span class="nv">?weight</span><span class="p">)</span> <span class="nv">?shipCost</span><span class="p">]</span>
+<span class="lineno">7</span>         <span class="p">[(</span><span class="nb">&lt;= </span><span class="nv">?price</span> <span class="nv">?shipCost</span><span class="p">)]]</span>
+</pre></div>
+
+<p>Or: find me the customer/product combinations where the shipping cost dominates the product cost.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Assignment</h1></header>
+            
+            
+            <section><p><code>$ git checkout database</code></p>
+<p>Fill in the datalog queries in <code>db.clj</code> and test the functions from the REPL.</p>
+<p>You'll get instructions how to execute functions from REPL.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>(thanks!)</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.md">presentation.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/51
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">The Immutable Stack</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Schedule</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Intro</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Examples</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Clojure crash course</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Clojure crash course</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Clojure crash course</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Clojure crash course</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Clojure crash course</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Clojure crash course</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Clojure crash course</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Clojure crash course</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Clojure crash course</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Clojure crash course</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Clojure crash course</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Clojure crash course</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Clojure crash course</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Sequence abstraction</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Mutable state</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Clojure crash course</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">REST API</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">REST API</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Ring</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Compojure</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Liberator</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Putting it all together</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Assignment</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">User interface</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">User interface</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">ClojureScript abstractions</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">ClojureScript abstractions</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Assignment</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Example book screen</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Database</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Datomic: deconstructing the database</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Information Model</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">State Model</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Distribution Model</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Coordination Model</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Datalog in 6 minutes</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Query Anatomy</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">Variables and Constants</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Data Pattern: E-A-V</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Data Pattern: E-A-V</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">Where Clause</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Input(s)</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Predicates</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">Aggregates</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Functions</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Assignment</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">(thanks!)</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
