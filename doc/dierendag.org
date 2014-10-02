@@ -41,7 +41,7 @@
 **** Oefening: queries met Datalog
 
 ** TODO
-*** MB: 3 Branches maken
+*** Martin: Datomic afmaken en branch maken voor oefening
 
 ** Klaarzetten voor tijdens presentatie:
 
