@@ -9,11 +9,6 @@
 
 (defonce books-state (atom []))
 
-(go (let [response
-          (<! (http/get "/books"))
-          data (:body response)]
-      (reset! books-state (set data))))
-
 (defn books []
   [:div.container])
 
