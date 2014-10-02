@@ -387,6 +387,70 @@ When user clicks on button with text "Books" a screen will appear that lists all
 
 ---
 # Database
+---
+
+# Datomic: deconstructing the database
+
+## relations | objects => facts
+
+Information Model
+
+## place | time => values
+
+State Model
+
+## client | server => peers
+
+Distribution Model
+
+## reads | writes => reaction
+
+Coordination Model
+
+![Datomic](img/datomic-icon.png)
+
+---
+
+# Information Model
+
+* Traditional: relations vs. objects, impedance mismatch
+
+![EAVT](img/eavt.png)
+
+* Datomic: facts, EAVT, Datoms - combined with a declarative, relational query language to store and retrieve those facts (no SQL by the way) 
+
+---
+
+# State Model
+
+* Traditional: update in place, contention, "the basis problem"
+
+![Treerings](img/tree_rings.gif)
+
+* Datomic: Accretion of immutable facts, the database as an expanding value, otherwise: [excision](http://blog.datomic.com/2013/05/excision.html)
+
+---
+
+# Distribution Model
+
+* Traditional: Client-server, partitions between service providers and service requesters
+
+![Peers](img/peers.png)
+
+* Datomic: Peers and Storage, and Transactors too, empower applications by coordinating change and storage
+
+
+---
+
+# Coordination Model
+
+# Deconstructing the Coordination Model
+
+* Traditional: heavy coordination for reads and writes, need to poll for novelty
+
+![Perception](img/eyeman.gif)
+
+* Datomic: splits "perception" (reads) and "process" (writes), reactive - not polling
 
 ---
 # Datalog in 6 minutes
