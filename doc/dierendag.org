@@ -1,4 +1,3 @@
-
 * Devnology Community Day - Immutable Stack workshop
 
 ** Programma
@@ -33,10 +32,21 @@
 **** core-async
 **** cljs-http
 **** Applicatie: lijst van animals tonen (met CRUD ops)
-**** Oefening: lijst van books tonen (zonder CRUD, alleen get) 
+**** Oefening: lijst van books tonen (zonder CRUD, alleen get)
 
 *** Database (10+20)
 **** Datomic
 **** Datalog 5 minute crash course
 **** Applicatie: ipv memory db -> datomic
 **** Oefening: queries met Datalog
+
+** TODO
+*** MB: books pagina opfleuren
+*** MB: 3 Branches maken
+
+** Klaarzetten voor tijdens presentatie:
+
+*** Matchmaker voor demo
+*** Intellij voor crash course
+*** REPL demo
+*** Om examples

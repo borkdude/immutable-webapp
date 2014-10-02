@@ -1,7 +1,7 @@
 .notes landslide gastcollege.md --linenos=inline -c -r
 
 # The Immutable Stack
-04-10-2014
+04-10-2014 (dierendag)
 
 Martin van Amersfoorth
 
@@ -14,8 +14,8 @@ Michiel Borkent
 
 * Intro (10 m.)
 * Clojure crash course (20 m.)
-* Web server (10+20 m.)
-* Web client (10+20 m.)
+* REST API (10+20 m.)
+* User interface (10+20 m.)
 * Database (10+20 m.)
 
 ---
@@ -27,6 +27,15 @@ Michiel Borkent
 ** Ring, Compojure, Liberator
 ** React
 * Datomic
+
+---
+# Examples
+
+* Matchmaker
+* Lipton
+
+---
+# Clojure crash course
 
 ---
 # Clojure crash course
@@ -224,10 +233,160 @@ Pure functions are used to atomically transform immutable value stored in refere
 
 Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
 
+
+---
+# REST API
+
+---
+# REST API
+
+* Ring: HTTP abstraction
+* Compojure: routing
+* Liberator: expose data as resources
+
+---
+# Ring
+
+* HTTP abstraction library
+* Inspired by WSGI (Python) and Rack (Ruby)
+* Represents requests and responses as maps
+* [SPEC](https://github.com/ring-clojure/ring/blob/master/SPEC)
+* Middleware
+
+Example:
+
+    !clojure
+    (defn handler [req]
+      {:status 200
+       :body "{:a 1, :b 2}"
+       :headers {"Content-Type" "application/edn"})
+
+    (defn run-server []
+      (run-jetty #'handler {:port 8080}))
+
+---
+# Compojure
+
+* Routing library for Ring
+* [Specific destructuring](https://github.com/weavejester/compojure/wiki/Destructuring-Syntax)
+
+Example:
+
+    !clojure
+    (defroutes main-routes
+      (GET "/" [] (index-page))
+      (GET "/animals/:id" [id]
+        (find-animal id))
+      (route/resources "/")
+      (route/not-found "Page not found"))
+
+    (def app
+      (-> (handler/site main-routes)
+        (wrap-base-url)))
+
 ---
 # Liberator
 
-http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
+* Library for exposing data as resources
+* Compliant with relevant requirements of HTTP specification RFC-2616
+* Inspired by Erlang Webmachine
+
+Example:
+
+    !clojure
+    (defresource hello-world
+      :available-media-types ["text/plain"]
+      :handle-ok "Hello, world!")
+
+[Decision tree](http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg)
+
+---
+# Putting it all together
+
+Code example from `api.clj`
+
+
+---
+# Assignment
+
+`$ git checkout rest-api`
+
+Add endpoints / liberator resources to `api.clj`
+
+* GET
+    * all books
+    * one specific book
+* POST
+    * a new book
+* DELETE
+    * a book
+* PUT
+    * to change book details
+
+Test it with curl, browser or other REST client
+
+---
+# User interface
+
+---
+# User interface
+
+* Clojurescript
+    - Clojure compiled to javascript
+* React
+    - V of MVC
+    - Component based
+    - Components can have props and inner state
+    - Virtual DOM
+
+* ClojureScript abstractions
+    - Om
+    - Reagent
+
+---
+# ClojureScript abstractions
+
+## Om
+* Opiniated library by David Nolen
+* App-state based on one atom
+* Cursor based access (kind of a functional lens / zipper)
+* Components can access shared state, app state or local state
+* Communication between components via app-state, handlers or core.async
+* Explicit hooks React lifecycle
+* Follows React semantics closely (e.g. local state changes cause re-rendering)
+
+See [examples](https://github.com/swannodette/om/tree/master/examples)
+
+---
+# ClojureScript abstractions
+
+## Reagent
+* Minimalistic ClojureScript interface to React
+* State is saved in RAtom, like clojure.core/atom, but keeps track of derefs
+* Components can deref RAtom and will be re-rendered when RAtom changes
+* Less verbose than Om
+* You can hook to React lifecycle, but often don't need to
+
+See [examples](http://holmsand.github.io/reagent/)
+
+---
+# Assignment
+
+`$ git checkout user-interface`
+
+Implement the following user story.
+
+When user clicks on button with text "Books" a screen will appear that lists all books with:
+
+* cover
+* title
+* authors
+* release data
+* animal on cover
+
+
+---
+# Database
 
 ---
 # Datalog in 6 minutes
@@ -403,3 +562,13 @@ Call functions by binding inputs:
 	        [(<= ?price ?shipCost)]]
 
 Or: find me the customer/product combinations where the shipping cost dominates the product cost.
+
+---
+
+# Assignment
+
+`$ git checkout database`
+
+Fill in the datalog queries in `db.clj` and test the functions from the REPL.
+
+You'll get instructions how to execute functions from REPL.
