@@ -1,4 +1,4 @@
-.notes landslide gastcollege.md --linenos=inline -c -r
+.notes landslide presentation.md --linenos=inline -c -r -w
 
 # The Immutable Stack
 04-10-2014 (dierendag)
@@ -61,7 +61,7 @@
 ---
 # Clojure crash course
 
-In the REPL I will cover the following basics:
+In the REPL we will cover the following basics:
 
 * Clojure basics and special forms
     - if
@@ -179,7 +179,7 @@ Used mostly for representing code (for example in macros).
 
     !clojure
     (def expr (list 'println 1 2 3)) ;; (println 1 2 3), unevaluated
-    (eval expr) ;; (1 2 3), normally we don't do this
+    (eval expr) ;; prints 1 2 3, normally we don't do this
     (conj (list 1 2 3) 4) ;; (4 1 2 3)
 
 ---
@@ -312,11 +312,19 @@ Example:
 ---
 # Putting it all together
 
-Code example from `api.clj`
-
+Code example from [`api.clj`](https://github.com/borkdude/immutable-webapp/blob/master/src/webapp/api.clj)
 
 ---
-# Assignment
+# Assignments
+
+* We'll use an [example](https://github.com/borkdude/immutable-webapp) project to work on.
+* Follow the instructions in the README if you haven't yet setup a Clojure environment.
+* We have USB-sticks with IntelliJ + Cursive for Mac, Linux and Windows
+* Each assignment is based on a git branch and can be worked on independently
+* The answers are provided in the example's master branch
+
+---
+# Assignment 1
 
 `$ git checkout rest-api`
 
@@ -356,12 +364,12 @@ Test it with curl, browser or other REST client
 # ClojureScript abstractions
 
 ## Om
-* Opiniated library by David Nolen
+* Opinionated library by David Nolen
 * App-state based on one atom
 * Cursor based access (kind of a functional lens / zipper)
 * Components can access shared state, app state or local state
 * Communication between components via app-state, handlers or core.async
-* Explicit hooks React lifecycle
+* Explicit hooks to React lifecycle
 * Follows React semantics closely (e.g. local state changes cause re-rendering)
 
 See [examples](https://github.com/swannodette/om/tree/master/examples)
@@ -379,7 +387,7 @@ See [examples](https://github.com/swannodette/om/tree/master/examples)
 See [examples](http://holmsand.github.io/reagent/)
 
 ---
-# Assignment
+# Assignment 2
 
 `$ git checkout user-interface`
 
@@ -645,7 +653,7 @@ Or: find me the customer/product combinations where the shipping cost dominates 
 
 ---
 
-# Assignment
+# Assignment 3
 
 `$ git checkout database`
 
