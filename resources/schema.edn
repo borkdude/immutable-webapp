@@ -8,7 +8,7 @@
  
  {:db/id #db/id [:db.part/db]
   :db/ident :authors
-  :db/valueType :db.type/keyword
+  :db/valueType :db.type/string
   :db/cardinality :db.cardinality/many
   :db/index true
   :db.install/_attribute :db.part/db}

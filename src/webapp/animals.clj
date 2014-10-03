@@ -26,12 +26,35 @@
 (defn init
   []
   (do
-    (create! {:name "Painted-snipe"
-              :class "Aves"
+    (create! {:name    "Painted-snipe"
+              :class   :aves
               :species "Rostratulidae"})
-    (create! {:name "Aardwolf"
-              :class "Mammalia"
+
+    (create! {:name    "Yellow-backed duiker"
+              :class   :mammalia
+              :species "Cephalophus silvicultor"})
+    
+    (create! {:name    "Aardwolf"
+              :class   :mammalia
               :species "Proteles cristata"})
-    (create! {:name "Yellow-backed duiker"
-              :class "Mammalia"
-              :species "Cephalophus silvicultor"})))
+
+    (create! {:name    "Gnu"
+              :class   :mammalia
+              :species "Connochaetes gnou"})
+
+    (create! {:name    "Curled octopus"
+              :class   :cephalopoda
+              :species "Eledone cirrhosa"})
+
+    (create! {:name    "Horny toad"
+              :class   :reptilia
+              :species "Phrynosoma cornutum"})
+
+    (create! {:name    "Dung beetle"
+              :class   :insecta
+              :species "Scarabaeus sacer"})
+
+    (create! {:name    "Atlantic salmon"
+              :class   :osteichthyes
+              :species "Salmo salar"})
+    ))
