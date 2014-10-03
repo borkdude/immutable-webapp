@@ -42,6 +42,13 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id [:db.part/db]
+  :db/ident :pages
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/index true
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id [:db.part/db]
   :db/ident :released
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one

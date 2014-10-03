@@ -1,4 +1,5 @@
 (ns webapp.db
+  (:refer-clojure :exclude [read])
   (:require [datomic.api :as d]
             [clojure.java.io :refer (resource)]))
 
@@ -20,6 +21,11 @@
     (reset! connection (d/connect uri))
     (d/transact (conn) schema)
     nil))
+
+(defn close
+  []
+  (d/release (conn))
+  (reset! connection nil))
 
 (defn db
   []

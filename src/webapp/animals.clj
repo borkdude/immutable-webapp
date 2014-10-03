@@ -1,4 +1,5 @@
 (ns webapp.animals
+  (:refer-clojure :exclude [read])
   (:require [webapp.db :as db]))
 
 (defn create!

@@ -657,9 +657,16 @@ Or: find me the customer/product combinations where the shipping cost dominates 
 
 `$ git checkout database`
 
-Fill in the datalog queries in `db.clj` and test the functions from the REPL.
+Test the datalog queries in `webapp.query_test.clj`.
 
-You'll get instructions how to execute functions from REPL.
+You'll also get instructions how to perform the tests and how use the
+REPL to build your queries, in order to:
+
+* Query by attribute
+* Query by attribute with param
+* Query with predicats
+* Query with joins
+* Query with functions
 
 ---
 

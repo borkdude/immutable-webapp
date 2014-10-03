@@ -1,4 +1,5 @@
 (ns webapp.books
+  (:refer-clojure :exclude [read])
   (:require [webapp.db :as db]
             [webapp.animals :as animals]))
 
@@ -31,50 +32,56 @@
               :authors  ["Chas Emerick" "Brian Carper" "Christophe Grand"]
               :released #inst "2012-03-01"
               :img      "0636920013754.gif"
-              :animal   (:db/id (first (animals/read :name "Painted-snipe")))})
+              :animal   (:db/id (first (animals/read :name "Painted-snipe")))
+              :pages    630})
 
     (create! {:title    "ClojureScript Up and Running"
               :authors  ["Stuart Sierra" "Luke VanderHart"]
               :released #inst "2012-10-01"
               :img      "0636920025139.gif"
               :animal   (:db/id
-                         (first (animals/read :name "Yellow-backed duiker")))})
+                         (first (animals/read :name "Yellow-backed duiker")))
+              :pages    116})
 
     (create! {:title    "Clojure Cookbook"
               :authors  ["Luke VanderHart" "Ryan Neufeld"]
               :released #inst "2014-03-01"
               :img      "0636920029786.gif"
-              :animal   (:db/id (first (animals/read :name "Aardwolf")))})
+              :animal   (:db/id (first (animals/read :name "Aardwolf")))
+              :pages    476})
 
     (create! {:title    "Learning GNU Emacs"
               :authors  ["Debra Cameron" "James Elliott" "Marc Loy"
                          "Eric S. Raymond" "Bill Rosenblatt"]
               :released #inst "2004-12-01"
               :img      "9780596006488.gif"
-              :animal   (:db/id (first (animals/read :name "Gnu")))})
+              :animal   (:db/id (first (animals/read :name "Gnu")))
+              :pages    536})
 
     (create! {:title    "Graph Databases"
               :authors  ["Ian Robinson" "Jim Webber" "Emil Eifrem"]
               :released #inst "2013-06-20"
               :img      "0636920028246.gif"
-              :animal   (:db/id (first (animals/read :name "Curled octopus")))})
+              :animal   (:db/id (first (animals/read :name "Curled octopus")))
+              :pages    224})
 
     (create! {:title    "Ant: The Definitive Guide"
               :authors  ["Steve Holzner"]
               :released #inst "2005-04-01"
               :img      "9780596006099.gif"
-              :animal   (:db/id (first (animals/read :name "Horny toad")))})
+              :animal   (:db/id (first (animals/read :name "Horny toad")))
+              :pages    336})
 
     (create! {:title    "Oracle RMAN Pocket Reference"
               :authors  ["Darl Kuhn" "Scott Schulze"]
               :released #inst "2001-11-01"
               :img      "9780596002336.gif"
-              :animal   (:db/id (first (animals/read :name "Dung beetle")))})
+              :animal   (:db/id (first (animals/read :name "Dung beetle")))
+              :pages    126})
 
     (create! {:title    "CSS: The Definitive Guide"
               :authors  ["Eric A. Meyer"]
               :released #inst "2006-11-01"
               :img      "9780596527334.gif"
-              :animal   (:db/id (first (animals/read :name "Atlantic salmon")))})
-
-    ))
+              :animal   (:db/id (first (animals/read :name "Atlantic salmon")))
+              :pages    538})))
