@@ -2,13 +2,15 @@
   (:require [webapp.html :as html]
             [webapp.animals :as animals]
             [webapp.books :as books]
+            [webapp.db :as db]
             [liberator.core :refer (resource)]
             [compojure.core :refer (defroutes ANY)]
             [compojure.route :refer (resources not-found)]
             [ring.middleware.params :refer (wrap-params)]
             [ring.middleware.edn :refer (wrap-edn-params)]
             [ring.util.response :refer (redirect)]
-            [clj-json.core :as json]))
+            [clj-json.core :as json]
+            [datomic.api :as d]))
 
 (defn handle-exception
   [ctx]
@@ -55,7 +57,9 @@
        (resource
         :available-media-types ["application/edn"]
         :allowed-methods [:get]
-        :handle-ok (fn [ctx] (books/read))
+        :handle-ok (fn [ctx]
+                     (map #(update-in (into {} %) [:animal] (partial into {}))
+                          (books/read)))
         :handle-exception handle-exception))
   
   (ANY "/"
@@ -70,3 +74,9 @@
   (-> routes
       wrap-params
       wrap-edn-params))
+
+(defn init
+  []
+  (db/init)
+  (animals/init)
+  (books/init))

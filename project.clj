@@ -15,7 +15,8 @@
                  [clj-json "0.5.3"]
                  [hiccup "1.0.5"]
                  [reagent "0.4.2"]
-                 [sablono "0.2.22"]]
+                 [sablono "0.2.22"]
+                 [com.datomic/datomic-free "0.9.4899"]]
   :plugins [[lein-ring "0.8.10"]
             [lein-cljsbuild "1.0.4-SNAPSHOT"]]
   :source-paths ["src"]
@@ -27,6 +28,7 @@
                                    :optimizations :none
                                    :source-map true}}]}
   :ring {:handler webapp.api/handler
+         :init webapp.api/init
          :nrepl {:start? true :port 4500}
          :port 8090}
   :global-vars {*print-length* 20})

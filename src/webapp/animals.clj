@@ -23,11 +23,15 @@
   [id]
   (db/delete! id))
 
-(create! {:name "Painted-snipe"
-          :species "Rostratulidae"})
-
-(create! {:name "Aardwolf"
-          :species "Proteles cristata"})
-
-(create! {:name "Yellow-backed duiker"
-          :species "Cephalophus silvicultor"})
+(defn init
+  []
+  (do
+    (create! {:name "Painted-snipe"
+              :class "Aves"
+              :species "Rostratulidae"})
+    (create! {:name "Aardwolf"
+              :class "Mammalia"
+              :species "Proteles cristata"})
+    (create! {:name "Yellow-backed duiker"
+              :class "Mammalia"
+              :species "Cephalophus silvicultor"})))
