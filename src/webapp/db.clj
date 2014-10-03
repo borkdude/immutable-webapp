@@ -35,7 +35,7 @@
 (defn create!
   [m]
   (let [id (next-id)
-        dbid (d/tempid :db.part/user)] 
+        dbid (d/tempid :db.part/user)]
     @(d/transact (conn) (list (assoc m :db/id dbid :id id)))
     id))
 
@@ -43,10 +43,10 @@
   ([id]
      (let [found (d/q '[:find ?e :in $ ?id :where [?e :id ?id]] (db) id)]
        (if (seq found)
-         (d/touch (d/entity (db) (ffirst found))))))
+         (d/entity (db) (ffirst found)))))
   ([k v]
      (let [found (d/q '[:find ?e :in $ ?k ?v :where [?e ?k ?v]] (db) k v)]
-       (map (comp d/touch (partial d/entity (db)) first) found))))
+       (map (comp (partial d/entity (db)) first) found))))
 
 (defn update!
   [id m]
@@ -62,3 +62,20 @@
     (do @(d/transact (conn) [[:db.fn/retractEntity (:db/id found)]])
         true)
     false))
+
+(defn expand
+  ([e]
+     (if (instance? datomic.query.EntityMap e)
+       (let [m (into {} (d/touch e))]
+         (expand m (keys m)))
+       e))
+  ([e ks]
+     (if-not (empty? ks)
+       (let [val (get e (first ks))]
+         (cond
+          (instance? datomic.query.EntityMap val)
+          (expand (assoc e (first ks) (expand val)) (rest ks))
+          (and (set? val) (instance? datomic.query.EntityMap (first val)))
+          (expand (assoc e (first ks) (set (map expand val))) (rest ks))
+          :else (expand e (rest ks))))
+       e)))

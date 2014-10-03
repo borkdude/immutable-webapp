@@ -26,7 +26,7 @@
         :available-media-types ["application/edn" "application/json" "text/html"]
         :allowed-methods [:get :post]
         :handle-ok (fn [ctx]
-                     (let [found (animals/read)]
+                     (let [found (map db/expand (animals/read))]
                        (condp = (-> ctx :representation :media-type)
                          "application/edn" found
                          "application/json" (json/generate-string found)
@@ -42,7 +42,7 @@
            :available-media-types ["application/edn"]
            :allowed-methods [:get :put :delete]
            :handle-ok (fn [ctx]
-                        (animals/read id))
+                        (db/expand (animals/read id)))
            :put! (fn [ctx]
                    (animals/update!
                      id
@@ -58,8 +58,7 @@
         :available-media-types ["application/edn"]
         :allowed-methods [:get]
         :handle-ok (fn [ctx]
-                     (map #(update-in (into {} %) [:animal] (partial into {}))
-                          (books/read)))
+                     (map db/expand (books/read)))
         :handle-exception handle-exception))
   
   (ANY "/"
