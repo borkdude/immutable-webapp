@@ -215,9 +215,9 @@ Examples: `first`, `rest`, `map`, `filter`, `remove`.
     (def v1 [1 2 3 4])
     (first v1) ;; 1
     (rest v1) ;; (2 3 4)
-    (map v1 inc) ;; (2 3 4 5)
-    (filter v1 odd?) ;; (1 3)
-    (remove v1 odd?) ;; (2 4)
+    (map inc v1) ;; (2 3 4 5)
+    (filter odd? v1) ;; (1 3)
+    (remove odd? v1) ;; (2 4)
 
 ---
 # Mutable state

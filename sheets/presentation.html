@@ -729,9 +729,9 @@ Used mostly for representing code (for example in macros).</p>
 <div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="k">def </span><span class="nv">v1</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
 <span class="lineno">2</span> <span class="p">(</span><span class="nb">first </span><span class="nv">v1</span><span class="p">)</span> <span class="c1">;; 1</span>
 <span class="lineno">3</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">v1</span><span class="p">)</span> <span class="c1">;; (2 3 4)</span>
-<span class="lineno">4</span> <span class="p">(</span><span class="nb">map </span><span class="nv">v1</span> <span class="nv">inc</span><span class="p">)</span> <span class="c1">;; (2 3 4 5)</span>
-<span class="lineno">5</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">v1</span> <span class="nv">odd?</span><span class="p">)</span> <span class="c1">;; (1 3)</span>
-<span class="lineno">6</span> <span class="p">(</span><span class="nb">remove </span><span class="nv">v1</span> <span class="nv">odd?</span><span class="p">)</span> <span class="c1">;; (2 4)</span>
+<span class="lineno">4</span> <span class="p">(</span><span class="nb">map inc </span><span class="nv">v1</span><span class="p">)</span> <span class="c1">;; (2 3 4 5)</span>
+<span class="lineno">5</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">odd?</span> <span class="nv">v1</span><span class="p">)</span> <span class="c1">;; (1 3)</span>
+<span class="lineno">6</span> <span class="p">(</span><span class="nb">remove </span><span class="nv">odd?</span> <span class="nv">v1</span><span class="p">)</span> <span class="c1">;; (2 4)</span>
 </pre></div>
 </section>
             
