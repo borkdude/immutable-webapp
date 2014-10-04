@@ -261,6 +261,7 @@ Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
 * Ring: HTTP abstraction
 * Compojure: routing
 * Liberator: expose data as resources
+* Various libs: resource representations
 
 ---
 # Ring
@@ -317,6 +318,14 @@ Example:
       :handle-ok "Hello, world!")
 
 [Decision tree](http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg)
+
+---
+# Representations
+
+* EDN
+* Cheshire, clj-json
+* data.xml
+* Hiccup
 
 ---
 # Putting it all together
