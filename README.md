@@ -19,7 +19,7 @@ Install [leiningen](http://leiningen.org) by following the instructions on this
 
 ### Install IntelliJ
 To edit Clojure code we will use IntelliJ and the Cursive plugin. If you like, you can skip
-this step and use your favorite editor with Clojure support. Code changes are auto-compiled, 
+this step and use your favorite editor with Clojure support. Code changes are auto-compiled,
 so you don't need IntelliJ for Clojure compilation.
 
 Download and install IntelliJ via [this link](http://www.jetbrains.com/idea/download/).
@@ -54,11 +54,9 @@ In another terminal window again cd into immutable-webapp's directory and run `l
 Browser to `http://localhost:8090/index.html` and you should see "Hello world!"
 
 
+## Slides
 
-
-
-
-
+The final slides for this workshop can be found [here](sheets/presentation.html).
 
 ## License
 
