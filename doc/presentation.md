@@ -664,7 +664,7 @@ REPL to build your queries, in order to:
 
 * Query by attribute
 * Query by attribute with param
-* Query with predicats
+* Query with predicates
 * Query with joins
 * Query with functions
 
