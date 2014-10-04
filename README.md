@@ -56,7 +56,7 @@ Browser to `http://localhost:8090/index.html` and you should see "Hello world!"
 
 ## Slides
 
-The final slides for this workshop can be found [here](sheets/presentation.html).
+The final slides for this workshop can be found [here](https://rawgit.com/borkdude/immutable-webapp/master/sheets/presentation.html).
 
 ## License
 
