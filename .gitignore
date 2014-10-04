@@ -11,3 +11,5 @@ resources/public/out
 *.iml
 .nrepl-port
 /doc/*.html
+\#*#
+\.#*

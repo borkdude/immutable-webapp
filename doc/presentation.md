@@ -23,22 +23,31 @@
 * Database (10+20 m.)
 
 ---
-# Intro
+# Clojure
 
-# Clojure(Script)
+![LispCycles](img/lisp_cycles.png)
+
+---
+
 # Immutable Stack
 
-* Datomic
-* Ring
-* Compojure
-* Liberator
-* ReactJS: Om or Reagent
+Engineered:
 
-+
+* Noir
+* Pedestal
 
-* many more
+Evolutionary:
 
-# Examples
+* Ring, Compojure, Liberator, Hiccup (2009)
+* Funding, books, conj (2010)
+* ClojureScript (2011)
+* Datomic (2012)
+* core.async (2013)
+* Om, Reagent (2014)
+
+---
+
+# Examples @ Finalist
 
 * Matchmaker
 * Lipton
