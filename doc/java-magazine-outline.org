@@ -1,0 +1,45 @@
+* Clojure Overstapservice
+** Inleiding
+*** Wat is Clojure
+**** Kern = immutability, persistent data structures
+**** Omarmen van hosting platform
+**** (Composable) libraries ipv frameworks
+** Stadium: full stack web development
+*** Clojure 8 jaar: waar staan we nu
+*** ClojureScript
+**** React -> Reagent / Om etc.
+*** core.async
+**** http-cljs
+*** reader conditionals (.cljc)
+*** Datomic
+** Voordelen van overstappen
+*** Een taal beheersen voor server en client
+*** Herbruikbaarheid van code/data op server en client
+*** geen callback hell op client
+*** Minder complexiteit (uit zich in minder regels code)
+*** Ontwikkelen met directe feedback
+***** REPL
+***** figwheel
+
+ 
+** Het is makkelijk om over te stappen
+*** Weliswaar geen certificeringspad, maar goede introducties zijn er wel (zie kader)
+*** Gedeeltelijk 'vervangen', hetzij van front-end, hetzij van back-end
+**** Microservices
+*** Blijft JVM
+**** Clojure is eigenlijk een Java library
+
+** Conclusie
+*** Goed idee om over te stappen
+**** Voordelen
+**** Makkelijk om over te stappen
+**** Acties om over te stappen
+***** In kader plaatsen:
+***** MOOC
+***** Boeken
+***** Clojure Cursus
+***** Immutable Webapp repo
+***** Talks van Rich Hickey et al
+***** Lijstje
+      https://github.com/pjagielski/clojure-landscape-from-java
+
