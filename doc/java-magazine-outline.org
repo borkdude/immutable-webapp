@@ -21,7 +21,6 @@
 ***** REPL
 ***** figwheel
 
- 
 ** Het is makkelijk om over te stappen
 *** Weliswaar geen certificeringspad, maar goede introducties zijn er wel (zie kader)
 *** Gedeeltelijk 'vervangen', hetzij van front-end, hetzij van back-end
@@ -34,12 +33,22 @@
 **** Voordelen
 **** Makkelijk om over te stappen
 **** Acties om over te stappen
-***** In kader plaatsen:
+In kader plaatsen:
 ***** MOOC
+****** Functional Programming with Clojure
+http://mooc.fi/courses/2014/clojure/
 ***** Boeken
+****** Clojure for the Brave and True
+http://www.amazon.com/Clojure-Brave-True-Ultimate-Programmer/dp/1593275919
+****** Living Clojure
+http://www.amazon.com/Living-Clojure-Carin-Meier/dp/1491909048
 ***** Clojure Cursus
-***** Immutable Webapp repo
-***** Talks van Rich Hickey et al
-***** Lijstje
-      https://github.com/pjagielski/clojure-landscape-from-java
+****** Clojure for the Brave and True
+http://www.braveclojure.com
+****** Immutable Webapp repo
+***** Talks
+****** Rich Hickey et al
+***** Transitioning
+****** Clojure Landscape from Java
+https://github.com/pjagielski/clojure-landscape-from-java
 
