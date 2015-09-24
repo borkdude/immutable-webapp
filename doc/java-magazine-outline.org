@@ -1,35 +1,70 @@
 * Clojure Overstapservice
 ** 0.125 MvA: Inleiding
-*** Aanleiding
-Praatje Rich Hickey op Java One 2 juni 2015
-*** Doel van artikel
-Update van Clojure ecosysteem. Toevoegingen. Ontwikkelingen. Aanreiken
-van middelen om te switchen van Java -> Clojure, teneinde te
-profiteren van de voordelen. Je zou het kunnen beschouwen als een overstapservice.
 
-*** Wat is Clojure
-**** Kern = immutability, persistent data structures
-**** Omarmen van hosting platform
-**** (Composable) libraries ipv frameworks
-**** MvA: Van Rich Hickey naar Cognitect
-Geestelijk vader Rich Hickey
-Rich heeft een jaar besteed om de taal te ontwikkelen
-Voorbeeld van Hammock Driven Development
-Het denkwerk werd aanvankelijk opgepakt in kleine kring
-Van kleinschalige community naar 'big business' o.l.v. Cognitect
-Rentmeesterschap van Relevance van Clojure.
-Cognitect.
-Support.
+Nog even schetsmatig:
 
-**** Clojure is voor sommige bedrijven een strategische keuze geworden
-***** Puppet Labs
-http://blog.cognitect.com/blog/2015/7/28/a-puppet-labs-revolution-powered-by-clojure
-***** Otto.de
-http://dev.otto.de/2015/06/23/a-tale-of-two-lambdas-2/
-***** Wall Mart
+Praatje Rich Hickey op Java One 2 juni 2015 Rich gaat in op een quote
+uit een interview met Adrian Cockroft:
+
+http://thenewstack.io/the-new-stack-makers-adrian-cockcroft-on-sun-netflix-clojure-go-docker-and-more/
+
+"A lot of the best programmers and the most productive programmers I
+know are writing everything in _____ and swearing by it, and then just
+producing ridiculously sophisticated things in a very short time. And
+that programmer productivity matters."
+
+Cockroft had het niet over Java, maar over Clojure. Rich Hickey ging
+vervolgens in op de vraag wat dan eigenlijk het verschil is tussen
+Java en Clojure, en waarom je veel productiever kunt zijn met Clojure.
+
+Clojure wordt niet alleen gebruikt bij Netflix, maar ook bij Amazon, WalmartLabs.
 http://blog.cognitect.com/blog/2015/6/30/walmart-runs-clojure-at-scale
-**** Eigenzinnig/anders
-Alternatief voor Java
+
+Hier in Europa is Clojure de primaire keuze voor bijvoorbeeld Otto.de.
+http://dev.otto.de/2015/06/23/a-tale-of-two-lambdas-2/
+
+Neem bijvoorbeeld de volgende quote:
+
+"Clojure shrinks our code base to about one-fifth the size it would be if we had written in Java"
+Anthony Marcar - Senior architect, WalmartLabs
+
+Dus, wil jij de voordelen behouden van de Java Virtual Machine, maar ook
+tot wel duizenden regels code per jaar besparen, stap dan over op
+Clojure. Speciaal voor jou and andere lezers van Java Magazine is hier
+de Clojure overstapservice.
+
+Maar voordat we ingaan op de voordelen van overstappen, en wat je er
+dan voor terugkrijgt, hetgeen ook samenhangt met de laatste
+ontwikkelingen op Clojure-gebied, eerst een klein beetje historie.
+
+Clojure werd in 2007 bedacht door Rich Hickey. Hij vond dat hij na 20
+jaar programmeren teveel tijd had verspild met OO-talen als C++ en
+Java, want hij had gezien dat je dezelfde systemen veel efficienter en
+effectiever kunt bouwen met een functionele programmeertaal. 
+
+Dus besloot hij 'een Lisp' voor de JVM te maken, met twee pijlers:
+- data orientatie: functional, persistent and immutable data
+  structures + make this idiomatic, overal, in de back-end, in de
+  front-end, op een Hadoop cluster
+- simplicity: loose coupling geeft je flexibiliteit, de mogelijkheid
+  om software aan te passen zonder side-effects en aan de andere kant
+  ook inputs te geven zonder dat-ie het begeeft
+
+Rich heeft er een jaar over gedaan, waarin hij voornamelijk bezig was
+met nadenken. Voor de rest het monnikenwerk om de goede
+interoperabiliteit met de JVM te bereiken, vanwaaruit de taal - zoals
+een goede Lisp het betaamt - van daaruit verder op te bouwen.
+
+Rich Hickey noemde het Clojure, maakte het open source en stuurde een
+paar e-mails om dit kenbaar te maken. Dit werd opgepakt en al gauw
+ontstond een kleine, maar productieve community, waaruit een Clojure
+ecosysteem groeide.
+
+Clojure werd omarmd door Relevance, een Ruby club uit South Carolina,
+en inmiddels omgedoopt tot Cognitect heeft het de ontwikkeling en het
+stewardship over Clojure, ClojureScript, maar ook Datomic op zich
+genomen. Dankzij Cognitect is Clojure een valide career-choice geworden.
+
 ** 0.25 MB: Voordelen van overstappen
 *** Een taal beheersen voor server en client
 *** Herbruikbaarheid van code/data op server en client
