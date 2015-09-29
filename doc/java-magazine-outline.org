@@ -17,8 +17,16 @@ Cockroft had het niet over Java, maar over Clojure. Rich Hickey ging
 vervolgens in op de vraag wat dan eigenlijk het verschil is tussen
 Java en Clojure, en waarom je veel productiever kunt zijn met Clojure.
 
-Clojure wordt niet alleen gebruikt bij Netflix, maar ook bij Amazon, WalmartLabs.
-http://blog.cognitect.com/blog/2015/6/30/walmart-runs-clojure-at-scale
+Better and more flexible programs. Sooner.
+Because Clojure is data-oriented and simple.
+
+Clojure wordt niet alleen gebruikt bij Netflix, maar ook:
+WalmartLabs http://blog.cognitect.com/blog/2015/6/30/walmart-runs-clojure-at-scale
+Heroku
+Staples
+Twitter
+Groupon
+PuppetLabs
 
 Hier in Europa is Clojure de primaire keuze voor bijvoorbeeld Otto.de.
 http://dev.otto.de/2015/06/23/a-tale-of-two-lambdas-2/
@@ -27,6 +35,14 @@ Neem bijvoorbeeld de volgende quote:
 
 "Clojure shrinks our code base to about one-fifth the size it would be if we had written in Java"
 Anthony Marcar - Senior architect, WalmartLabs
+
+Daarmee wordt niet alleen bedoeld 'concision', maar ook 'generality'
+i.p.v. 'specificity'. Voorbeeld: higher order functions.  Of de
+specificiteit van class interfaces t.o.v. een 'map'. Elke class
+introduceert een nieuwe taal.
+
+Kleinere programma's hebben minder bugs, zijn sneller te maken, zijn
+simpeler en daardoor robuuster.
 
 Dus, wil jij de voordelen behouden van de Java Virtual Machine, maar ook
 tot wel duizenden regels code per jaar besparen, stap dan over op
@@ -48,7 +64,8 @@ Dus besloot hij 'een Lisp' voor de JVM te maken, met twee pijlers:
   front-end, op een Hadoop cluster
 - simplicity: loose coupling geeft je flexibiliteit, de mogelijkheid
   om software aan te passen zonder side-effects en aan de andere kant
-  ook inputs te geven zonder dat-ie het begeeft
+  ook inputs te geven zonder dat-ie het begeeft; ander voorbeeld:
+  polymorphism.
 
 Rich heeft er een jaar over gedaan, waarin hij voornamelijk bezig was
 met nadenken. Voor de rest het monnikenwerk om de goede
@@ -115,11 +132,23 @@ http://www.braveclojure.com
 Clojure Inside Out
 http://shop.oreilly.com/product/0636920030409.do
 **** Talks
-***** Rich Hickey et al
+***** Clojure Made Simple (2015)
+https://www.youtube.com/watch?v=VSdnJDO-xdg
+***** Simple Made Easy (2011)
+http://www.infoq.com/presentations/Simple-Made-Easy
+***** Hammock Driven Development (2010)
+https://www.youtube.com/watch?v=f84n5oFoZBc
+***** Are we there yet? (2009)
+http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey
 **** Transitioning
 ***** Clojure Landscape from Java
 https://github.com/pjagielski/clojure-landscape-from-java
-
+**** Tools
+***** IDE
+Eclipse, CounterClockwise
+IntelliJ, Cursive
+***** Clojure Toolbox
+http://www.clojure-toolbox.com
 ** 0.125 Samen: Conclusie
 *** Goed idee om over te stappen
 **** Voordelen
