@@ -102,7 +102,6 @@ genomen. Dankzij Cognitect is Clojure een valide career-choice geworden.
 **** Schema
 ** 0.25 MvA: Het is makkelijk om over te stappen
 *** Wervende tekst, parodie op commercials
-"Met Clojure kun je tot wel 10K regels code per jaar besparen"
 *** Weliswaar geen certificeringspad, maar goede introducties zijn er wel (zie kader)
 *** Gedeeltelijk 'vervangen', hetzij van front-end, hetzij van back-end
 **** Microservices
