@@ -14,3 +14,4 @@ resources/public/out
 \#*#
 \.#*
 .lein-failures
+resources/public/js/
