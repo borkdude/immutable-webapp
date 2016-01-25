@@ -11,3 +11,8 @@ resources/public/out
 *.iml
 .nrepl-port
 /doc/*.html
+\#*#
+\.#*
+.lein-failures
+resources/public/js/
+
