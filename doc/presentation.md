@@ -1,7 +1,7 @@
-.notes landslide gastcollege.md --linenos=inline -c -r
+.notes landslide presentation.md --linenos=inline -c -r -w
 
 # The Immutable Stack
-04-10-2014 (dierendag)
+26-01-2016
 
 ## Martin van Amersfoorth
 
@@ -16,32 +16,26 @@
 ---
 # Schedule
 
-* Intro (10 m.)
-* Clojure crash course (20 m.)
-* REST API (10+20 m.)
-* User interface (10+20 m.)
-* Database (10+20 m.)
+* Intro
+* Clojure crash course
+* REST API
+* User interface
+* Database
 
 ---
-# Intro
-
-# Clojure(Script)
 # Immutable Stack
 
-* Datomic
-* Ring
-* Compojure
-* Liberator
-* ReactJS: Om or Reagent
+* ClojureScript + ..
+* Clojure + Ring + ..
+* Datomic + ..
 
-+
+---
 
-* many more
-
-# Examples
+# Examples @ Finalist
 
 * Matchmaker
-* Lipton
+* ITFacts4You (METRI)
+* Dubbelklik LOB
 
 ---
 # Clojure crash course
@@ -61,7 +55,7 @@
 ---
 # Clojure crash course
 
-In the REPL I will cover the following basics:
+In the REPL we will cover the following basics:
 
 * Clojure basics and special forms
     - if
@@ -179,7 +173,7 @@ Used mostly for representing code (for example in macros).
 
     !clojure
     (def expr (list 'println 1 2 3)) ;; (println 1 2 3), unevaluated
-    (eval expr) ;; (1 2 3), normally we don't do this
+    (eval expr) ;; prints 1 2 3, normally we don't do this
     (conj (list 1 2 3) 4) ;; (4 1 2 3)
 
 ---
@@ -206,9 +200,9 @@ Examples: `first`, `rest`, `map`, `filter`, `remove`.
     (def v1 [1 2 3 4])
     (first v1) ;; 1
     (rest v1) ;; (2 3 4)
-    (map v1 inc) ;; (2 3 4 5)
-    (filter v1 odd?) ;; (1 3)
-    (remove v1 odd?) ;; (2 4)
+    (map inc v1) ;; (2 3 4 5)
+    (filter odd? v1) ;; (1 3)
+    (remove odd? v1) ;; (2 4)
 
 ---
 # Mutable state
@@ -252,6 +246,7 @@ Use the [Clojure cheat sheet](http://clojure.org/cheatsheet)
 * Ring: HTTP abstraction
 * Compojure: routing
 * Liberator: expose data as resources
+* Various libs: resource representations
 
 ---
 # Ring
@@ -310,13 +305,28 @@ Example:
 [Decision tree](http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg)
 
 ---
-# Putting it all together
+# Representations
 
-Code example from `api.clj`
-
+* EDN
+* Cheshire, clj-json
+* data.xml
+* Hiccup
 
 ---
-# Assignment
+# Putting it all together
+
+Code example from [`api.clj`](https://github.com/borkdude/immutable-webapp/blob/master/src/webapp/api.clj)
+
+---
+# Assignments
+
+* We'll use an [example](https://github.com/borkdude/immutable-webapp) project to work on.
+* Follow the instructions in the README if you haven't yet setup a Clojure environment.
+* Each assignment is based on a git branch and can be worked on independently
+* The answers are provided in the example's master branch
+
+---
+# Assignment 1
 
 `$ git checkout rest-api`
 
@@ -341,7 +351,7 @@ Test it with curl, browser or other REST client
 # User interface
 
 * Clojurescript
-    - Clojure compiled to javascript
+    - Clojure compiled to JavaScript
 * React
     - V of MVC
     - Component based
@@ -355,31 +365,16 @@ Test it with curl, browser or other REST client
 ---
 # ClojureScript abstractions
 
-## Om
-* Opiniated library by David Nolen
-* App-state based on one atom
-* Cursor based access (kind of a functional lens / zipper)
-* Components can access shared state, app state or local state
-* Communication between components via app-state, handlers or core.async
-* Explicit hooks React lifecycle
-* Follows React semantics closely (e.g. local state changes cause re-rendering)
-
-See [examples](https://github.com/swannodette/om/tree/master/examples)
-
----
-# ClojureScript abstractions
-
 ## Reagent
 * Minimalistic ClojureScript interface to React
 * State is saved in RAtom, like clojure.core/atom, but keeps track of derefs
 * Components can deref RAtom and will be re-rendered when RAtom changes
-* Less verbose than Om
 * You can hook to React lifecycle, but often don't need to
 
-See [examples](http://holmsand.github.io/reagent/)
+See [examples](http://reagent-project.github.io")
 
 ---
-# Assignment
+# Assignment 2
 
 `$ git checkout user-interface`
 
@@ -645,13 +640,20 @@ Or: find me the customer/product combinations where the shipping cost dominates 
 
 ---
 
-# Assignment
+# Assignment 3
 
 `$ git checkout database`
 
-Fill in the datalog queries in `db.clj` and test the functions from the REPL.
+Test the datalog queries in `webapp.query_test.clj`.
 
-You'll get instructions how to execute functions from REPL.
+You'll also get instructions how to perform the tests and how use the
+REPL to build your queries, in order to:
+
+* Query by attribute
+* Query by attribute with param
+* Query with predicates
+* Query with joins
+* Query with functions
 
 ---
 
