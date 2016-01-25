@@ -4,7 +4,6 @@
     [webapp.animals :refer (animals)]
     [webapp.books :refer (books)]
     [reagent.core :as reagent :refer [atom]]
-    [sablono.core :as html :refer-macros [html]]
     [cljs-http.client :as http]
     [cljs.core.async :refer (<!)]))
 
