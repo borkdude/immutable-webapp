@@ -2,7 +2,6 @@
   (:require-macros [cljs.core.async.macros :refer (go)])
   (:require
     [reagent.core :as reagent :refer [atom]]
-    [sablono.core :as html :refer-macros [html]]
     [cljs-http.client :as http]
     [cljs.core.async :refer (<!)]))
 
@@ -15,6 +14,10 @@
       (reset! animals-state (set data))))
 
 ;;; crud operations
+
+(defn remove-by-id [s id]
+  (set (remove #(= id (:id %)) s)))
+
 (defn add-animal! [a]
   (go (let [response
             (<! (http/post "/animals" {:edn-params
@@ -25,9 +28,8 @@
   (go (let [response
             (<! (http/delete (str "/animals/"
                                   (:id a))))]
-        (if (= (:status response)
-                 200)
-          (swap! animals-state disj a)))))
+        (if (= 200 (:status response))
+          (swap! animals-state remove-by-id (:id a))))))
 
 (defn update-animal! [a]
   (go (let [response
@@ -37,28 +39,23 @@
         (swap! animals-state
                (fn [old-state]
                  (conj
-                   (set (filter (fn [other]
-                                  (not= (:id other)
-                                        (:id a)))
-                                old-state))
-                   updated-animal))))))
-;;; end crud operations
+                  (remove-by-id old-state (:id a))
+                  updated-animal))))))
 
-(defn field-input-handler
-  "Returns a handler that updates value in atom map,
-  under key, with value from onChange event"
-  [atom key]
-  (fn [e]
-    (swap! atom
-           assoc key
-           (.. e -target -value))))
+;;; end crud operations
 
 (defn editable-input [atom key]
   (if (:editing? @atom)
     [:input {:type     "text"
              :value    (get @atom key)
-             :onChange (field-input-handler atom key)}]
-    (get @atom key)))
+             :on-change (fn [e] (swap! atom
+                                       assoc key
+                                       (.. e -target -value)))}]
+    [:p (get @atom key)]))
+
+(defn input-valid? [atom]
+  (and (seq (-> @atom :name))
+       (seq (-> @atom :species))))
 
 (defn animal-row [a]
   (let [row-state (atom {:editing? false
@@ -66,37 +63,35 @@
                          :species  (:species a)})
         current-animal (fn []
                          (assoc a
-                           :name (:name @row-state)
-                           :species (:species @row-state)))]
+                                :name (:name @row-state)
+                                :species (:species @row-state)))]
     (fn []
       [:tr
-       [:td (editable-input row-state :name)]
-       [:td (editable-input row-state :species)]
+       [:td [editable-input row-state :name]]
+       [:td [editable-input row-state :species]]
        [:td [:button.btn.btn-primary.pull-right
-             {:onClick (fn []
+             {:disabled (not (input-valid? row-state))
+              :on-click (fn []
                          (when (:editing? @row-state)
                            (update-animal! (current-animal)))
                          (swap! row-state update-in [:editing?] not))}
              (if (:editing? @row-state) "Save" "Edit")]]
        [:td [:button.btn.pull-right.btn-danger
-             {:onClick #(remove-animal! (current-animal))}
+             {:on-click #(remove-animal! (current-animal))}
              "\u00D7"]]])))
 
 (defn animal-form []
   (let [initial-form-values {:name     ""
                              :species  ""
                              :editing? true}
-        form-input-state (atom initial-form-values)
-        are-inputs-valid? (fn []
-                            (and (seq (-> @form-input-state :name))
-                                 (seq (-> @form-input-state :species))))]
+        form-input-state (atom initial-form-values)]
     (fn []
       [:tr
-       [:td (editable-input form-input-state :name)]
-       [:td (editable-input form-input-state :species)]
+       [:td [editable-input form-input-state :name]]
+       [:td [editable-input form-input-state :species]]
        [:td [:button.btn.btn-primary.pull-right
-             {:disabled (not (are-inputs-valid?))
-              :onClick  (fn []
+             {:disabled (not (input-valid? form-input-state))
+              :on-click  (fn []
                           (add-animal! @form-input-state)
                           (reset! form-input-state initial-form-values))}
              "Add"]]])))
@@ -106,10 +101,7 @@
    [:table.table.table-striped
     [:thead
      [:tr
-      [:th "Name"]
-      [:th "Species"]
-      [:th ""]
-      [:th ""]]]
+      [:th "Name"] [:th "Species"] [:th ""] [:th ""]]]
     [:tbody
      (map (fn [a]
             ^{:key (str "animal-row-" (:id a))}
