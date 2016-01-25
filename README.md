@@ -45,8 +45,8 @@ To open a leiningen project, just open the `project.clj` file with IntelliJ.
 ### Running the project
 
 To compile Clojurescript open a terminal window and cd into immutable-webapp's directory.
-Then run `lein cljsbuild auto`. Changes in the Clojurescript code of this project are
-automatically picked up.
+Then run `lein do clean, cljsbuild auto`. Changes in the Clojurescript code of this project are
+automatically picked up. For live reloading, do `lein do clean, figwheel`.
 
 In another terminal window again cd into immutable-webapp's directory and run `lein ring server`.
 Browser to `http://localhost:8090/index.html` and you should see "Hello world!"
