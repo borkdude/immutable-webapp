@@ -17,9 +17,11 @@
                  [prismatic/schema "1.0.4"]
                  [com.datomic/datomic-free "0.9.5344"]]
   :plugins [[lein-ring "0.9.7"]
-            [lein-cljsbuild "1.1.2"]]
+            [lein-cljsbuild "1.1.2"]
+            [lein-figwheel "0.5.0-4"]]
   :source-paths ["src"]
   :cljsbuild {:builds [{:id "webapp"
+                        :figwheel {:on-jsload "webapp.main/fig-reload"}
                         :source-paths ["src-cljs"]
                         :compiler {:output-to "resources/public/js/main.js"
                                    :output-dir "resources/public/js"
@@ -33,4 +35,5 @@
   :ring {:handler webapp.api/handler
          :nrepl {:start? true :port 4500}
          :port 8090}
+  :figwheel {:css-dirs ["resources/public/css"]}
   :global-vars {*print-length* 20})
