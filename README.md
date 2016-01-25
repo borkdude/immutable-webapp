@@ -23,9 +23,7 @@ this step and use your favorite editor with Clojure support. Code changes are au
 so you don't need IntelliJ for Clojure compilation.
 
 Download and install IntelliJ via [this link](http://www.jetbrains.com/idea/download/).
-The community edition of IntelliJ is free.
-Version 13.1 is preferred, but version 12 and 13 are also supported by the Cursive plugin,
-which we will install in the next step.
+The community edition of IntelliJ is free. Version 15 is preferred.
 
 ### Install the Cursive plugin for IntelliJ.
 Open IntelliJ and open Preferences.
@@ -47,12 +45,11 @@ To open a leiningen project, just open the `project.clj` file with IntelliJ.
 ### Running the project
 
 To compile Clojurescript open a terminal window and cd into immutable-webapp's directory.
-Then run `lein cljsbuild auto`. Changes in the Clojurescript code of this project are
-automatically picked up.
+Then run `lein do clean, cljsbuild auto`. Changes in the Clojurescript code of this project are
+automatically picked up. For live reloading, do `lein do clean, figwheel`.
 
 In another terminal window again cd into immutable-webapp's directory and run `lein ring server`.
 Browser to `http://localhost:8090/index.html` and you should see "Hello world!"
-
 
 ## Slides
 

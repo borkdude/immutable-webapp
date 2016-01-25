@@ -34,3 +34,7 @@
                             (js/document.getElementById "app")))
 
 (mountit)
+
+(defn fig-reload []
+  (println "reloading reagent")
+  (mountit))

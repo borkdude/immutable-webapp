@@ -1,12 +1,19 @@
 (ns webapp.animals
   (:refer-clojure :exclude [read])
-  (:require [webapp.db :as db]))
+  (:require [webapp.db :as db]
+            [schema.core :as s]))
+
+(def Animal
+  {:name s/Str
+   :species s/Str
+   (s/optional-key :class) s/Keyword})
 
 (defn create!
   ([]
-     (db/create! {:type :animal}))
+   (db/create! {:type :animal}))
   ([m]
-     (db/create! (assoc m :type :animal))))
+   (s/validate Animal m)
+   (db/create! (assoc m :type :animal))))
 
 (defn read
   ([]

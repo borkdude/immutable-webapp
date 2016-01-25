@@ -1,7 +1,7 @@
 .notes landslide presentation.md --linenos=inline -c -r -w
 
 # The Immutable Stack
-04-10-2014 (dierendag)
+26-01-2016
 
 ## Martin van Amersfoorth
 
@@ -16,41 +16,26 @@
 ---
 # Schedule
 
-* Intro (10 m.)
-* Clojure crash course (20 m.)
-* REST API (10+20 m.)
-* User interface (10+20 m.)
-* Database (10+20 m.)
+* Intro
+* Clojure crash course
+* REST API
+* User interface
+* Database
 
 ---
-# Clojure
-
-![LispCycles](img/lisp_cycles.png)
-
----
-
 # Immutable Stack
 
-Engineered:
-
-* Noir
-* Pedestal
-
-Evolutionary:
-
-* Ring, Compojure, Liberator, Hiccup (2009)
-* Funding, books, conj (2010)
-* ClojureScript (2011)
-* Datomic (2012)
-* core.async (2013)
-* Om, Reagent (2014)
+* ClojureScript + ..
+* Clojure + Ring + ..
+* Datomic + ..
 
 ---
 
 # Examples @ Finalist
 
 * Matchmaker
-* Lipton
+* ITFacts4You (METRI)
+* Dubbelklik LOB
 
 ---
 # Clojure crash course
@@ -337,7 +322,6 @@ Code example from [`api.clj`](https://github.com/borkdude/immutable-webapp/blob/
 
 * We'll use an [example](https://github.com/borkdude/immutable-webapp) project to work on.
 * Follow the instructions in the README if you haven't yet setup a Clojure environment.
-* We have USB-sticks with IntelliJ + Cursive for Mac, Linux and Windows
 * Each assignment is based on a git branch and can be worked on independently
 * The answers are provided in the example's master branch
 
@@ -367,7 +351,7 @@ Test it with curl, browser or other REST client
 # User interface
 
 * Clojurescript
-    - Clojure compiled to javascript
+    - Clojure compiled to JavaScript
 * React
     - V of MVC
     - Component based
@@ -381,28 +365,13 @@ Test it with curl, browser or other REST client
 ---
 # ClojureScript abstractions
 
-## Om
-* Opinionated library by David Nolen
-* App-state based on one atom
-* Cursor based access (kind of a functional lens / zipper)
-* Components can access shared state, app state or local state
-* Communication between components via app-state, handlers or core.async
-* Explicit hooks to React lifecycle
-* Follows React semantics closely (e.g. local state changes cause re-rendering)
-
-See [examples](https://github.com/swannodette/om/tree/master/examples)
-
----
-# ClojureScript abstractions
-
 ## Reagent
 * Minimalistic ClojureScript interface to React
 * State is saved in RAtom, like clojure.core/atom, but keeps track of derefs
 * Components can deref RAtom and will be re-rendered when RAtom changes
-* Less verbose than Om
 * You can hook to React lifecycle, but often don't need to
 
-See [examples](http://holmsand.github.io/reagent/)
+See [examples](http://reagent-project.github.io")
 
 ---
 # Assignment 2
