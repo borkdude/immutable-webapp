@@ -15,4 +15,5 @@ resources/public/out
 \.#*
 .lein-failures
 resources/public/js/
+figwheel_server.log
 
